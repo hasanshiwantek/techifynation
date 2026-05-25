@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
-
   images: {
     unoptimized: true, // 👈 Add this line
     formats: ["image/avif", "image/webp"],
