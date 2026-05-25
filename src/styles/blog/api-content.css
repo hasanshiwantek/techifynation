@@ -1,0 +1,111 @@
+/* ================= ROOT ================= */
+.api-content-wrapper {
+  color: #4a4a4a;
+}
+
+/* ================= HEADINGS ================= */
+
+/* H2 – Blog Title */
+.api-content-wrapper h2 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  margin-bottom: 0.75rem !important;
+  color: #000 !important;
+}
+
+@media (min-width: 640px) {
+  .api-content-wrapper h2 { font-size: 20px !important; }
+}
+@media (min-width: 1024px) {
+  .api-content-wrapper h2 { font-size: 22px !important; }
+}
+@media (min-width: 1440px) {
+  .api-content-wrapper h2 { font-size: 24px !important; }
+}
+
+/* H3 */
+.api-content-wrapper h3 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+}
+
+/* ================= PARAGRAPH ================= */
+.api-content-wrapper p {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  margin-bottom: 1.25rem !important;
+  color: #4a4a4a !important;
+}
+
+@media (min-width: 1440px) {
+  .api-content-wrapper p { font-size: 14px !important; }
+}
+
+/* ================= LINKS ================= */
+.api-content-wrapper a {
+  color: #545454 !important;
+  text-decoration: none !important;
+}
+
+.api-content-wrapper a:hover {
+  text-decoration: none !important;
+}
+
+/* ================= STRONG / EM ================= */
+.api-content-wrapper strong {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.api-content-wrapper em {
+  font-style: italic !important;
+}
+
+/* ================= LIST ================= */
+.api-content-wrapper ul {
+  list-style: disc !important;
+  padding-left: 20px !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.api-content-wrapper li {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.6 !important;
+}
+
+/* ================= IMAGES ================= */
+.api-content-wrapper img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 1.5rem 0 !important;
+  border-radius: 6px !important;
+}
+
+/* ================= TABLE ================= */
+.api-content-wrapper table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+}
+
+.api-content-wrapper th,
+.api-content-wrapper td {
+  border: 1px solid #ddd !important;
+  padding: 12px !important;
+}
+
+.api-content-wrapper th {
+  background: #f5f5f5 !important;
+  font-weight: 600 !important;
+}
+
+/* ================= REMOVE INLINE STYLES SIDE-EFFECT ================= */
+.api-content-wrapper span {
+  color: inherit !important;
+  font-size: inherit !important;
+  text-decoration: inherit !important;
+}

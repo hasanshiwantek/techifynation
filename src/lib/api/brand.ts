@@ -1,0 +1,21 @@
+// // lib/api/categories.ts
+// const baseURL = process.env.NEXT_PUBLIC_API_URL;
+import { baseURL, storeId } from "../axiosInstance";
+
+export const fetchBrands = async () => {
+  const res = await fetch(`${baseURL}web/brands/brands`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      storeId: storeId,
+    },
+    // ✅ ISR: cache once, refresh every 5 min
+    next: { revalidate: 30 },
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch brands");
+
+  const data = await res.json();
+
+  return data?.data || [];
+};

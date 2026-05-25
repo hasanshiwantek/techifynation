@@ -1,0 +1,83 @@
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import { persistReducer, persistStore } from "redux-persist";
+
+import homeReducer from "./slices/homeSlice";
+import authReducer from "./slices/authSlice";
+import configReducer from "./slices/configSlice";
+import cartSliceReducer from "./slices/cartSlice";
+import currencyReducer from "./slices/currencySlice";
+import storeFrontReducer from "./slices/storeFrontSlice";
+import myaccountReducer from "./slices/myaccountSlice";
+import recentReducer from "./slices/recentSlice";
+import orderReducer from "./slices/orderslice";
+import couponReducer from "./slices/couponSlice"
+import shippingZoneReducer from "./slices/shippingSlice"
+import multiAddressReducer from "./slices/multiAddressSlice";
+import contactReducer from "./slices/contactSlice";
+import advanceSearchReducer from "./slices/advanceSearchSlice";
+import scriptReducer from "./slices/scriptSlice";
+
+// ✅ only cart persist hoga
+const cartPersistConfig = {
+  key: "cart",
+  storage,
+};
+
+// ✅ only auth persist hoga
+const authPersistConfig = {
+  key: "auth",
+  storage,
+};
+
+
+// ✅ only recent persist hoga
+const recentPersistConfig = {
+  key: "recent",
+  storage,
+};
+
+// ✅ only order persist hoga
+const orderPersistConfig = {
+  key: "order",
+  storage,
+};
+
+
+// ✅ only order persist hoga
+const couponPersistConfig = {
+  key: "coupon",
+  storage,
+};
+
+const rootReducer = combineReducers({
+  home: homeReducer,
+  currency: currencyReducer,
+  auth: persistReducer(authPersistConfig, authReducer), // persisted
+  config: configReducer,
+  cart: persistReducer(cartPersistConfig, cartSliceReducer), // persisted
+  recent: persistReducer(recentPersistConfig, recentReducer),
+  order: persistReducer(orderPersistConfig, orderReducer),
+  coupon: persistReducer(couponPersistConfig, couponReducer),
+  storeFront: storeFrontReducer,
+  myaccount: myaccountReducer,
+  shippingZone: shippingZoneReducer,
+  multiAddress: multiAddressReducer,
+  contact: contactReducer,
+  advanceSearch: advanceSearchReducer,
+  scripts: scriptReducer,
+});
+
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // redux-persist ke liye required
+    }),
+});
+
+export const persistor = persistStore(store);
+
+// Infer types
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
