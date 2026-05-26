@@ -102,9 +102,9 @@ export const metadata: Metadata = {
     images: ["/serverblink-logo.png"], // Replace with actual logo path
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "",
+    shortcut: "",
+    apple: "",
   },
 };
 export default function RootLayout({
