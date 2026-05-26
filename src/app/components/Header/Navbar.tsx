@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
-import navlogo from "@/assets/nav-logo.png";
+import navlogo from "@/assets/nav-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { RootState } from "@/redux/store";
