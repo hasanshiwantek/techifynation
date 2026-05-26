@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     "Techify Nation cart",
   ],
   alternates: {
-    canonical: "https://server-blink.vercel.app/cart",
+    canonical: "https://techifynation-8g63.vercel.app/cart",
   },
   openGraph: {
     title: "Checkout",
     description:
       "View and manage your items in the shopping cart at Techify Nation. Add, remove, or update quantities before checkout.",
-    url: "https://server-blink.vercel.app/checkout",
+    url: "https://techifynation-8g63.vercel.app/checkout",
     siteName: "Techify Nation",
     images: [
       {

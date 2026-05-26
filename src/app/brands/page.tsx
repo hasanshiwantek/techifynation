@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Browse all brands available at Techify Nation — servers, networking, and IT hardware.",
   alternates: {
-    canonical: "https://server-blink.vercel.app/brands",
+    canonical: "https://techifynation-8g63.vercel.app/brands",
   },
 };
 

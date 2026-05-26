@@ -16,7 +16,7 @@ export async function GET() {
     const robotsTxt = res.data?.data?.[0]?.website?.robotsTxt;
 
  if (robotsTxt) {
-  const sitemapUrl = `${process.env.SITE_URL || "https://server-blink.vercel.app"}/sitemap.xml`;
+  const sitemapUrl = `${process.env.SITE_URL || "https://techifynation-8g63.vercel.app"}/sitemap.xml`;
   const robotsWithSitemap = `${robotsTxt}\n\nSitemap: ${sitemapUrl}`;
   
   return new Response(robotsWithSitemap, {
@@ -29,7 +29,7 @@ export async function GET() {
     } else {
       // Fallback if robotsTxt not found in response
       const fallback = `User-agent: *\nAllow: /\nSitemap: ${
-        process.env.SITE_URL || "https://server-blink.vercel.app"
+        process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
       }/sitemap.xml\n`;
 
       return new Response(fallback, {
@@ -43,7 +43,7 @@ export async function GET() {
 
     // Fallback on error
     const fallback = `User-agent: *\nAllow: /\nSitemap: ${
-      process.env.SITE_URL || "https://server-blink.vercel.app"
+      process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
     }/sitemap.xml\n`;
 
     return new Response(fallback, {

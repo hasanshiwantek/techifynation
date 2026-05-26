@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { contactRequests } from "@/redux/slices/contactSlice";
-import { useAppDispatch,useAppSelector } from "@/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 type ContactFormData = {
   full_name: string;
   phone_number: string;
@@ -70,20 +70,7 @@ const ContactForm = () => {
           SMS Disclaimer:
         </p>
         <p className="text-[10px] text-[#545454] font-normal leading-[1.8]">
-          By providing my phone number to Techify Nation LLC, I agree and acknowledge
-          that Techify Nation may send text messages to my wireless phone number
-          for any purpose. Message frequency will vary, and Message and data
-          rates may apply. If you need further assistance, please reply “HELP”.
-          You can also opt out by replying “STOP.” For more information on how
-          your data will be handled, please visit&nbsp;
-          <a
-            href="/privacy-Policy"
-            className="text-[#FF3D3D] underline cursor-pointer"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://www.serverblink.com/privacy-policy.
-          </a>
+          By providing my phone number to Techify Nation LLC, I agree and acknowledge that Techify Nation may send text messages to my wireless phone number for any purpose. Message frequency will vary, and Message and data rates may apply. If you need further assistance, please reply "HELP". You can also opt out by replying "STOP." For more information on how your data will be handled, please visit our privacy policy.
         </p>
       </div>
 

@@ -6,7 +6,7 @@ import Image from "next/image";
 import FooterSkeleton from "../loader/FooterSkeleton";
 import { subscribeNewsletter } from "@/redux/slices/contactSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
-import { getBlogs } from "@/redux/slices/storeFrontSlice";
+import { getBlogs, getWebPages } from "@/redux/slices/storeFrontSlice";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -25,9 +25,10 @@ const FooterBottom = () => {
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const { newsletterLoading, newsletterSuccess, newsletterError } = useSelector((state: any) => state.contact);
-  const { blogs, error, loading } = useAppSelector(
+  const { blogs, webPages, error, loading } = useAppSelector(
     (state: any) => state.storeFront
   );
+  const pagesList = webPages?.data || [];
   const router = useRouter();
   const blogPosts = blogs?.data || [];
 
@@ -50,6 +51,10 @@ const FooterBottom = () => {
   const handleSelect = (url: string) => {
     router.push(url);
   };
+
+  useEffect(() => {
+    dispatch(getWebPages({ page: 1, perPage: 100 }));
+  }, [dispatch]);
   return (
     <footer className="bg-[#333333] text-white w-full mx-auto">
       {/* 🔹 Newsletter Section */}
@@ -114,13 +119,13 @@ const FooterBottom = () => {
             </h4>
             <div className="space-y-2 text-[14px] lg:text-[12px] text-white">
               <p className="font-semibold">Address:</p>
-              <p>2210 Goldsmith Lane</p>
-              <p>Ste 126-5001</p>
-              <p>Louisville, KY 40218</p>
+              <p>Example</p>
+              <p>Example</p>
+              <p>Example, Ex</p>
               <p className="mt-3">
                 <span className="font-semibold">Phone Number:</span>{" "}
                 <a href="tel:+15022063033" className="hover:text-gray-300">
-                  +1502-206-3033
+                  +12345678911
                 </a>
               </p>
               <p>
@@ -163,52 +168,14 @@ const FooterBottom = () => {
             <h4 className="text-[16px] lg:text-[16px] font-bold mb-4 text-white">
               Quick Links
             </h4>
-            <ul className="space-y-2 text-[14px] lg:text-[12px] text-white">
-              <li>
-                <Link href="/warranty" className="hover:text-gray-300">
-                  Warranty
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-Policy" className="hover:text-gray-300">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/shipping-policy" className="hover:text-gray-300">
-                  Shipping Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/returnPolicy" className="hover:text-gray-300">
-                  Return & Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms-conditions" className="hover:text-gray-300">
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="hover:text-gray-300">
-                  Disclaimer
-                </Link>
-              </li>
-              <li>
-                <Link href="/blogs" className="hover:text-gray-300">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact-us" className="hover:text-gray-300">
-                  Contact Form
-                </Link>
-              </li>
-              <li>
-                <Link href="/about-us" className="hover:text-gray-300">
-                  About Us
-                </Link>
-              </li>
+            <ul className="space-y-1 text-[14px] lg:text-[12px] text-white">
+              {pagesList.map((page: any) => (
+                <li key={page.id}>
+                  <Link href={`${page.pageUrl}`} className="hover:text-gray-300">
+                    {page.pageName}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -249,7 +216,7 @@ const FooterBottom = () => {
               <h4 className="text-[16px] lg:text-[16px] font-bold mb-4 text-white">
                 Connect with Us:
               </h4>
-              <div className="flex gap-3">
+              {/* <div className="flex gap-3">
                 <Link
                   href="http://www.facebook.com/serverblink"
                   target="_blank"
@@ -278,7 +245,7 @@ const FooterBottom = () => {
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -14,7 +14,7 @@ const ShopNow = () => {
           aria-hidden
         />
         <div className="max-w-7xl mx-auto px-6 py-10 w-full">
-          <div className="w-full text-left text-[#444444]">
+          {/* <div className="w-full text-left text-[#444444]">
             <h2 className="text-[2.66rem] font-bold mb-4">ABOUT US</h2>
             <p className="text-2xl leading-relaxed mb-6 text-[#444444]">
               We are a leading online retailer of server parts, committed to
@@ -33,7 +33,7 @@ const ShopNow = () => {
                 SHOP NOW
               </button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -46,7 +46,7 @@ const ShopNow = () => {
       >
         <div className="md:ml-24 ">
           <div className="max-w-7xl mx-auto px-6 py-16">
-            <div className="w-full md:max-w-xl text-center md:text-left text-[#444444]">
+            {/* <div className="w-full md:max-w-xl text-center md:text-left text-[#444444]">
               <h2 className="text-3xl md:text-[2.7rem] font-bold md:mb-4">
                 ABOUT US
               </h2>
@@ -70,7 +70,7 @@ const ShopNow = () => {
                   SHOP NOW
                 </button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -9,19 +9,19 @@ import ShopNow from "./components/Home/ShopNow";
 import Testimonials from "./components/Home/Testimonials";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://server-blink.vercel.app"),
+  metadataBase: new URL("https://techifynation-8g63.vercel.app"),
   title: "PC, Computer & Server Parts | IT Hardware Store | Techify Nation",
   // title: "Home | Techify Nation",
   description:
     "Welcome to Techify Nation – your one-stop shop for servers, networking equipment, and IT solutions. Get the best prices and fast delivery.",
   alternates: {
-    canonical: "https://server-blink.vercel.app",
+    canonical: "https://techifynation-8g63.vercel.app",
   },
   openGraph: {
     title: "Techify Nation – Home",
     description:
       "Shop servers, networking gear, and IT solutions at Techify Nation. Affordable, reliable, and delivered fast.",
-    url: "https://server-blink.vercel.app",
+    url: "https://techifynation-8g63.vercel.app",
     siteName: "Techify Nation",
     images: [
       {
@@ -84,7 +84,7 @@ const Page = async () => {
                 isSlider={true}
                 title={"New Products".toUpperCase()}
               />
-              <Testimonials />
+              {/* <Testimonials /> */}
               <Brands />
               <ShopNow />
             </div>

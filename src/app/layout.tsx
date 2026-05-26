@@ -60,7 +60,7 @@ const robotoCondensed = Roboto_Condensed({
 // });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://server-blink.vercel.app"),
+  metadataBase: new URL("https://techifynation-8g63.vercel.app"),
   title: {
     // default: "Techify Nation",
     // template: "%s | Techify Nation",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://server-blink.vercel.app",
+    url: "https://techifynation-8g63.vercel.app",
     siteName: "Techify Nation",
     title: "Techify Nation – Quality Servers & IT Solutions",
     description:

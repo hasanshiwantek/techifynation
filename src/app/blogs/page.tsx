@@ -3,7 +3,7 @@ import BlogContainer from "../components/Blogs/BlogContainer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://server-blink.vercel.app"),
+  metadataBase: new URL("https://techifynation-8g63.vercel.app"),
   title: {
     default: "Blogs",
     template: "%s | Blogs ",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://server-blink.vercel.app/blogs",
+    url: "https://techifynation-8g63.vercel.app/blogs",
     siteName: "Techify Nation",
     title: "Techify Nation Blogs – Servers, Networking & IT Insights",
     description:

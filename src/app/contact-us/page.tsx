@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     "Techify Nation contact",
   ],
   alternates: {
-    canonical: "https://server-blink.vercel.app/contact-us",
+    canonical: "https://techifynation-8g63.vercel.app/contact-us",
   },
   openGraph: {
     title: "Contact Us | Techify Nation",
     description:
       "Get in touch with Techify Nation for product inquiries, customer support, and sales questions.",
-    url: "https://server-blink.vercel.app/contact-us",
+    url: "https://techifynation-8g63.vercel.app/contact-us",
     siteName: "Techify Nation",
     images: [
       {

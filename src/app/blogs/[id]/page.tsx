@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import navlogo from "@/assets/navlogo.png";
 
 const SITE_NAME = "Techify Nation LLC";
-const BASE_URL = "https://server-blink.vercel.app";
+const BASE_URL = "https://techifynation-8g63.vercel.app";
 const TWITTER_HANDLE = "@serverblink"; 
 const LOGO_URL = `${BASE_URL}/${navlogo}`; 
 
