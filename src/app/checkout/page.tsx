@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import CheckoutComponent from '../components/CheckoutComponent/CheckoutComponent'
 export const metadata: Metadata = {
   title: {
-    absolute: "Checkout - Techify Nation LLC"  // template ignore karega
+    absolute: "Checkout - Techify Nation "  // template ignore karega
   },
   description:
     "View and manage your items in the shopping cart at Techify Nation. Add, remove, or update quantities before checkout.",

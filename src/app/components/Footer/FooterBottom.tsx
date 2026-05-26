@@ -290,7 +290,7 @@ const FooterBottom = () => {
         <div className=" w-full max-w-full sm:max-w-[95%] md:max-w-[90%] lg:max-w-[85%] xl:max-w-[85%]
         2xl:max-w-[85%]  mx-auto px-4 xl:px-4 2xl:px-28">
           <p className="text-white text-left text-base">
-            © {new Date().getFullYear()} Techify Nation LLC |
+            © {new Date().getFullYear()} Techify Nation  |
             <Link href="/sitemap" className="hover:text-gray-300">
               Sitemap
             </Link>

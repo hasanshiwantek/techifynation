@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   title: {
     // default: "Techify Nation",
     // template: "%s | Techify Nation",
-    default: "Techify Nation LLC",
+    default: "Techify Nation ",
     template: "%s | Techify Nation ",
   },
   description:

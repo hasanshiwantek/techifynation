@@ -211,7 +211,7 @@ information regarding use of the Site, please contact us at:
 </p>
 
 <p className="text-[14px] leading-[20px] mt-6">
-<strong>Techify Nation LLC <br />
+<strong>Techify Nation  <br />
 Old Address: 7301 Fegenbush Ln Suite#201-5001, Louisville, KY 40228  <br />
 New Address: 2210 Goldsmith Lane, Ste 126-5001, Louisville, KY 40218</strong>
 </p>

@@ -4,7 +4,7 @@ import ResultSuccess from '../components/Result/ResultSuccess';
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Techify Nation LLC - Newsltter Subcription"
+    absolute: "Techify Nation  - Newsltter Subcription"
   },
   description:
     "View and manage your items in the shopping cart at Techify Nation. Add, remove, or update quantities before checkout.",
