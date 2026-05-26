@@ -51,7 +51,7 @@ const ContactForm = () => {
       {/* Page Title */}
       <div className="mb-8">
         <h1 className="sm:text-[28px] h1-lg mb-4">Contact Form</h1>
-        <h2 className="sm:text-[28px] h1-lg ">Techify Nation, </h2>
+        <h2 className="sm:text-[28px] h1-lg ">Techify Nation </h2>
       </div>
 
       {/* Intro Text */}
