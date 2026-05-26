@@ -10,7 +10,7 @@ const ShopNow = () => {
       <div className="sm:hidden">
         <div
           className="w-full h-[220px] bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/about/about-us.jpg')" }}
+          style={{ backgroundImage: "url('/about/about-us-last.png')" }}
           aria-hidden
         />
         <div className="max-w-7xl mx-auto px-6 py-10 w-full">
@@ -40,9 +40,7 @@ const ShopNow = () => {
       {/* sm+: unchanged — text on image */}
       <div
         className="hidden sm:block w-full bg-cover bg-center bg-no-repeat h-[350px] md:h-[490px]"
-        style={{
-          backgroundImage: "url('/about/about-us.jpg')",
-        }}
+        style={{ backgroundImage: "url('/about/about-us-last.png')" }}
       >
         <div className="md:ml-24 ">
           <div className="max-w-7xl mx-auto px-6 py-16">
