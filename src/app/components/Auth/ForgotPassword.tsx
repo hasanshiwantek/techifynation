@@ -79,7 +79,7 @@ const ForgotPassword = () => {
                   Home
                 </Link>
                 <span className="text-gray-500">/</span>
-                <span className="text-[#b91c1c]">Forgot Password</span>
+                <span className="text-[#014ec3]">Forgot Password</span>
               </div>
             </nav>
 
@@ -134,7 +134,7 @@ const ForgotPassword = () => {
                   </button>
                 </div>
                 {errors.email && (
-                  <p className="text-sm text-red-600">{errors.email.message}</p>
+                  <p className="text-sm text-[#014ec3]">{errors.email.message}</p>
                 )}
               </div>
             </form>
@@ -142,7 +142,7 @@ const ForgotPassword = () => {
             <p className="mt-8 text-sm text-gray-600">
               <Link
                 href="/auth/login"
-                className="text-[#b91c1c] underline decoration-[#b91c1c] underline-offset-2 hover:opacity-90"
+                className="text-[#014ec3] underline decoration-[#014ec3] underline-offset-2 hover:opacity-90"
               >
                 Back to login
               </Link>

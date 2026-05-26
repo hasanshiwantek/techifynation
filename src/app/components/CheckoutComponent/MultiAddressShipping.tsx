@@ -217,8 +217,8 @@ const AllocateModal: React.FC<{
                 <div className="px-6 py-3 bg-gray-50 border-b flex justify-between items-center">
                     <span className="text-[16px] text-gray-600">{totalLeft} item{totalLeft !== 1 ? "s" : ""} left to allocate</span>
                     <div className="flex gap-4">
-                        <button type="button" onClick={() => { const c: Record<string, number> = {}; cart.forEach((i) => { c[String(i.id)] = 0; }); setQuantities(c); }} className="text-[16px] text-red-600 hover:underline">Clear all</button>
-                        <button type="button" onClick={() => { const a: Record<string, number> = {}; cart.forEach((i) => { a[String(i.id)] = getLeft(i.id); }); setQuantities(a); }} className="text-[16px] text-red-600 hover:underline">Select all items left</button>
+                        <button type="button" onClick={() => { const c: Record<string, number> = {}; cart.forEach((i) => { c[String(i.id)] = 0; }); setQuantities(c); }} className="text-[16px] text-[#014ec3] hover:underline">Clear all</button>
+                        <button type="button" onClick={() => { const a: Record<string, number> = {}; cart.forEach((i) => { a[String(i.id)] = getLeft(i.id); }); setQuantities(a); }} className="text-[16px] text-[#014ec3] hover:underline">Select all items left</button>
                     </div>
                 </div>
                 <div className="px-6 py-2 bg-gray-50 border-b grid grid-cols-12 text-[16px] font-medium text-gray-600">
@@ -477,7 +477,7 @@ const MultiAddressShipping = ({
                             ) : (
                                 <div className="flex items-center gap-2">
                                     <span className="text-[1rem] text-gray-600 font-medium">No shipping address entered</span>
-                                    <button type="button" onClick={() => openAddressModal(dest.id)} className="text-[1rem] text-red-600 hover:underline">Enter shipping address</button>
+                                    <button type="button" onClick={() => openAddressModal(dest.id)} className="text-[1rem] text-[#014ec3] hover:underline">Enter shipping address</button>
                                 </div>
                             )}
 
@@ -490,10 +490,10 @@ const MultiAddressShipping = ({
                                                     {totalAllocatedSlots} item{totalAllocatedSlots > 1 ? "s" : ""} allocated
                                                 </span>
                                                 <div className="flex gap-4 text-[1rem]">
-                                                    <button type="button" onClick={() => dispatch(toggleShowItems(dest.id))} className="text-xs text-red-600 hover:underline">
+                                                    <button type="button" onClick={() => dispatch(toggleShowItems(dest.id))} className="text-xs text-[#014ec3] hover:underline">
                                                         {dest.showItems ? "Hide items ▲" : "Show items ▼"}
                                                     </button>
-                                                    <button type="button" onClick={() => { setEditingDestId(dest.id); setAllocateModalOpen(true); }} className="text-xs text-red-600 hover:underline">
+                                                    <button type="button" onClick={() => { setEditingDestId(dest.id); setAllocateModalOpen(true); }} className="text-xs text-[#014ec3] hover:underline">
                                                         Reallocate items
                                                     </button>
                                                 </div>
@@ -510,7 +510,7 @@ const MultiAddressShipping = ({
                                     ) : (
                                         <div className="flex items-center gap-2">
                                             <span className="text-[1rem] font-bold text-gray-700">No item allocated</span>
-                                            <button type="button" onClick={() => { setEditingDestId(dest.id); setAllocateModalOpen(true); }} className="text-[1rem] text-red-600 hover:underline">Allocate items</button>
+                                            <button type="button" onClick={() => { setEditingDestId(dest.id); setAllocateModalOpen(true); }} className="text-[1rem] text-[#014ec3] hover:underline">Allocate items</button>
                                         </div>
                                     )}
 

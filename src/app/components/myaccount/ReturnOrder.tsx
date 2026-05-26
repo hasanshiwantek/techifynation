@@ -64,7 +64,7 @@ const ReturnOrder = () => {
     return (
       <div className="p-4">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-          <p className="text-red-600 text-lg font-medium">{error}</p>
+          <p className="text-[#014ec3] text-lg font-medium">{error}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 px-6 py-2 bg-[#014ec3] text-white rounded hover:bg-red-700 transition"
@@ -114,7 +114,7 @@ const ReturnOrder = () => {
             {/* Product Details */}
             <div className="flex flex-col items-center md:items-start justify-center w-full">
               {/* <Link href={`/my-account/orders/${order?.orderNumber || ""}`}> */}
-                <p className="mb-1 text-xl text-red-600 hover:text-red-700 transition-colors duration-200">
+                <p className="mb-1 text-xl text-[#014ec3] hover:text-red-700 transition-colors duration-200">
                   Order #{order?.orderNumber || "N/A"}
                 </p>
               {/* </Link> */}

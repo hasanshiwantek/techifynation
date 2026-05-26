@@ -30,7 +30,7 @@ const Brands = () => {
         <CommonCarousel items={data} />
       ) : (
         error && <div className="flex justify-center items-center h-20"> 
-        <div className="text-red-600">Failed to load brands </div>
+        <div className="text-[#014ec3]">Failed to load brands </div>
          </div>
       )}
     </>

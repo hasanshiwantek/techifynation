@@ -97,7 +97,7 @@ const OrderProduct = () => {
               {/* Product Details */}
               <div className="flex flex-col justify-center w-full">
                 <Link href={`/my-account/orders/${item.order_number || ""}`}>
-                  <p className="mb-1 text-xl text-red-600 hover:text-red-700 transition-colors duration-200">
+                  <p className="mb-1 text-xl text-[#014ec3] hover:text-red-700 transition-colors duration-200">
                     Order #{item.order_number || "N/A"}
                   </p>
                 </Link>
@@ -140,7 +140,7 @@ const OrderProduct = () => {
               {item?.status === "Completed" && (
                 <button
                   onClick={(e) => handleReturnClick(e, item)}
-                  className="mt-2 text-lg text-[#393939] underline cursor-pointer hover:text-red-600 transition"
+                  className="mt-2 text-lg text-[#393939] underline cursor-pointer hover:text-[#014ec3] transition"
                 >
                   Return Items?
                 </button>

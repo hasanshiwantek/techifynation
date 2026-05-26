@@ -248,7 +248,7 @@ const ReturnItemsModal: React.FC<ReturnItemsModalProps> = ({
           {/* Error State */}
           {error && !loading && !isSubmit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <p className="text-red-600 text-lg font-medium mb-2">
+              <p className="text-[#014ec3] text-lg font-medium mb-2">
                 Error Loading Order
               </p>
               <p className="text-gray-700 mb-4">{error}</p>
@@ -341,7 +341,7 @@ const ReturnItemsModal: React.FC<ReturnItemsModalProps> = ({
                   <div className="space-y-6">
                     <div>
                       <label className="block font-medium text-lg md:text-xl mb-2">
-                        Return Reason <span className="text-red-600">*</span>
+                        Return Reason <span className="text-[#014ec3]">*</span>
                       </label>
                       <select
                         required

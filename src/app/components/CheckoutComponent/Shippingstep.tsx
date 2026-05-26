@@ -294,7 +294,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
                 localStorage.removeItem("shippingCost")
                 localStorage.removeItem("shippingData")
               }}
-              className="text-[13px] text-red-600 hover:underline font-medium"
+              className="text-[13px] text-[#014ec3] hover:underline font-medium"
             >
               {isMultiAddress ? "Ship to single address" : "Ship to multiple addresses"}
             </button>

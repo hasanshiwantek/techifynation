@@ -96,7 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
             {/* New Price */}
             <span className="text-[1rem] font-bold  " style={{ fontFamily: '"Roboto"' }}>Call for pricing:<Link href="tel:+15022063033" className="text-[#014ec3] underline">
-              (502) 206-3033
+              {/* (502) 206-3033 */}
             </Link></span>
           </>
 

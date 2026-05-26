@@ -135,7 +135,7 @@ const ContactForm = () => {
             />
             {errors.email && (
               <div
-                className="mt-1 text-red-600"
+                className="mt-1 text-[#014ec3]"
                 role="alert"
                 aria-label={String(errors.email.message)}
               >
@@ -214,7 +214,7 @@ const ContactForm = () => {
           />
           {errors.comments && (
             <div
-              className="mt-1 text-red-600"
+              className="mt-1 text-[#014ec3]"
               role="alert"
               aria-label={String(errors.comments.message)}
             >

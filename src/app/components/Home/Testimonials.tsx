@@ -219,7 +219,7 @@ const Testimonials = () => {
             </div>
           ) : reviewsError ? (
             <div className="flex flex-col items-center justify-center gap-4 bg-white border rounded-md p-8 text-center w-full max-w-full overflow-hidden">
-              <p className="h5-regular text-red-600 break-words w-full">{reviewsError}</p>
+              <p className="h5-regular text-[#014ec3] break-words w-full">{reviewsError}</p>
               <button
                 onClick={() => dispatch(fetchReviews())}
                 className="btn-outline-primary !px-6 !py-3 !text-base"

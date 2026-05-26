@@ -137,7 +137,7 @@ const ProductReview = () => {
             </div>
           ) : reviewsError ? (
             <div className="border rounded-lg p-10 text-center bg-white shadow-xs flex flex-col items-center gap-4">
-              <p className="h5-regular text-red-600">{reviewsError}</p>
+              <p className="h5-regular text-[#014ec3]">{reviewsError}</p>
               <Button
                 variant="outline"
                 className="!px-6 !py-3 !text-base"
@@ -221,7 +221,7 @@ const ProductReview = () => {
         <div className="text-center mt-8">
           <Button
             variant="link"
-            className="text-lg text-red-600 font-medium hover:underline"
+            className="text-lg text-[#014ec3] font-medium hover:underline"
             onClick={handleSeeMore}
           >
             See all reviews ↓

@@ -100,7 +100,7 @@ const CategoriesSidebar: React.FC<CategoriesSidebarProps> = ({ activeCategoryId 
         <div className="bg-[#393939] px-3 py-2 border-b-3 border-[#8b8b8b]">
           <h2 className="text-[13px] lg:text-[15px] font-bold">SHOP BY CATEGORY</h2>
         </div>
-        <div className="bg-white px-3 py-4 text-sm text-red-600">{error}</div>
+        <div className="bg-white px-3 py-4 text-sm text-[#014ec3]">{error}</div>
       </div>
     );
 

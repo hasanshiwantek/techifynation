@@ -136,7 +136,7 @@ const SigninPage = () => {
                 )}
                 <Link
                   href="/forgot-password"
-                  className="text-red-600 hover:text-red-700 text-[14px] underline"
+                  className="text-[#014ec3] hover:text-red-700 text-[14px] underline"
                 >
                   Forgot your password?
                 </Link>

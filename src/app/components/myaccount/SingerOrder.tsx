@@ -114,7 +114,7 @@ const SingleOrder = () => {
   if (error || !order) {
     return (
       <div className="py-6 max-w-full mx-auto">
-        <div className="border rounded-md p-6 text-center text-red-600">
+        <div className="border rounded-md p-6 text-center text-[#014ec3]">
           {error || "Order not found"}
         </div>
       </div>

@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
             {/* Cart */}
             {/* <Link
               href="/cart"
-              className="relative text-gray-800 hover:text-red-600 transition"
+              className="relative text-gray-800 hover:text-[#014ec3] transition"
             >
               <button aria-label="cart" className="relative">
                 <ShoppingCart className="w-6 h-6" />
@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col text-gray-800">
                 <p className="text-sm font-medium">
                   Call:{" "}
-                  <span className="text-red-600 font-semibold">
+                  <span className="text-[#014ec3] font-semibold">
                     +1 502-206-3033
                   </span>
                 </p>
@@ -144,7 +144,7 @@ const Navbar: React.FC = () => {
                   Email:{" "}
                   <a
                     href="mailto:info@techifynation.com"
-                    className="hover:text-red-600"
+                    className="hover:text-[#014ec3]"
                   >
                     info@techifynation.com
                   </a>
