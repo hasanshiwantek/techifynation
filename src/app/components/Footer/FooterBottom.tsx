@@ -122,12 +122,12 @@ const FooterBottom = () => {
               <p>Example</p>
               <p>Example</p>
               <p>Example, Ex</p>
-              {/* <p className="mt-3">
+              <p className="mt-3">
                 <span className="font-semibold">Phone Number:</span>{" "}
                 <a href="tel:+15022063033" className="hover:text-gray-300">
-                  +12345678911
+                  {/* +12345678911 */}
                 </a>
-              </p> */}
+              </p>
               <p>
                 <span className="font-semibold">Email:</span>{" "}
                 <a
