@@ -50,7 +50,7 @@ const AllBrandsClient = ({ brands }: AllBrandsClientProps) => {
               Home
             </Link>
             <span className="text-gray-500">/</span>
-            <span className="text-[#FF3D3D]">All Brands</span>
+            <span className="text-[#014ec3]">All Brands</span>
           </div>
         </nav>
 
@@ -69,7 +69,7 @@ const AllBrandsClient = ({ brands }: AllBrandsClientProps) => {
                 <div key={brand.id} className="min-w-0 w-full md:w-[226px]">
                   <Link
                     href={`/brand/${brand.slug}`}
-                    className="group block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D3D] focus-visible:ring-offset-2 md:w-[226px]"
+                    className="group block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#014ec3] focus-visible:ring-offset-2 md:w-[226px]"
                   >
                     <div className="flex w-full aspect-square items-center justify-center border-2 border-black bg-white p-1 transition-opacity group-hover:opacity-90 md:aspect-auto md:w-[226px] md:p-0">
                       <Image
@@ -100,7 +100,7 @@ const AllBrandsClient = ({ brands }: AllBrandsClientProps) => {
                       className={cn(
                         "flex h-10 min-w-10 items-center justify-center border px-3 text-sm font-medium transition-colors",
                         page === p
-                          ? "border-[#FF3D3D] text-[#FF3D3D] bg-white"
+                          ? "border-[#014ec3] text-[#014ec3] bg-white"
                           : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
                       )}
                     >

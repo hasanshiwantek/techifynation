@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
                 </svg>
               </div>
               <div className="flex flex-col text-gray-800">
-                <p className="text-[15px] font-semibold">
+                {/* <p className="text-[15px] font-semibold">
                   Call:{" "}
                   <a
                     href="tel:+15022063033"
@@ -61,15 +61,15 @@ const Navbar: React.FC = () => {
                   >
                     +1 502-206-3033
                   </a>
-                </p>
+                </p> */}
 
                 <p className="text-[15px] font-semibold">
                   Email:{" "}
                   <a
-                    href="mailto:sales@serverblink.com"
+                    href="mailto:info@techifynation.com"
                     className="text-[var(--primary-color)] text-[15px] hover:underline"
                   >
-                    sales@serverblink.com
+                    info@techifynation.com
                   </a>
                 </p>
               </div>
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
               <button aria-label="cart" className="relative">
                 <ShoppingCart className="w-6 h-6" />
                 {cart?.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#FF3D3D] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-[#014ec3] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                     {cart?.length}
                   </span>
                 )}
@@ -143,10 +143,10 @@ const Navbar: React.FC = () => {
                 <p className="text-sm">
                   Email:{" "}
                   <a
-                    href="mailto:sales@serverblink.com"
+                    href="mailto:info@techifynation.com"
                     className="hover:text-red-600"
                   >
-                    sales@serverblink.com
+                    info@techifynation.com
                   </a>
                 </p>
               </div>

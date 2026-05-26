@@ -72,7 +72,7 @@
 }
 
 :root {
-  --primary-color: #FF3D3D;
+  --primary-color: #014ec3;
   --bg-color: #eaeaea;
   --font-color: #545454;
   --border-color: #f2f2f2;
@@ -214,7 +214,7 @@ button {
 }
 
 .btn-outline-primary:hover {
-  @apply bg-[white] text-[#FF3D3D] border-[#FF3D3D];
+  @apply bg-[white] text-[#014ec3] border-[#014ec3];
 }
 
 
@@ -226,10 +226,10 @@ button {
   @apply font-bold text-[18px] leading-4 uppercase;
 
   /* Colors */
-  @apply bg-[#FF3D3D] text-white;
+  @apply bg-[#014ec3] text-white;
 
   /* Border styling - no left, right, top borders, bottom border with darker color */
-  @apply border-0 border-b-[4px] border-b-[#FF3D3D] rounded-none;
+  @apply border-0 border-b-[4px] border-b-[#014ec3] rounded-none;
 
   /* Spacing */
   @apply px-[2.28571rem] py-[0.85714rem] my-0;
@@ -245,15 +245,15 @@ button {
 }
 
 .btn-primary:hover {
-  @apply bg-[#FF3D3D] border-b-[#FF3D3D];
+  @apply bg-[#014ec3] border-b-[#014ec3];
 }
 
 .btn-primary:active {
-  @apply bg-[#FF3D3D] translate-y-[1px];
+  @apply bg-[#014ec3] translate-y-[1px];
 }
 
 .btn-primary:focus {
-  @apply outline-2 outline-[#FF3D3D] outline-offset-2;
+  @apply outline-2 outline-[#014ec3] outline-offset-2;
 }
 
 

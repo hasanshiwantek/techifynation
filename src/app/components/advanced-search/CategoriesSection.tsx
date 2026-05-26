@@ -17,14 +17,14 @@ const CategoriesSection = ({ categories }: { categories: any[] }) => {
         <div key={index} className="text-[15px]">
           <Link
             href={`/category/${pair.parent.slug}`}
-            className="text-[#FF3D3D] underline "
+            className="text-[#014ec3] underline "
           >
             {pair.parent.name}
           </Link>
           <span className="text-gray-500 mx-1">&gt;</span>
           <Link
             href={`/category/${pair.child.slug}`}
-            className="text-[#FF3D3D] underline"
+            className="text-[#014ec3] underline"
           >
             {pair.child.name}
           </Link>

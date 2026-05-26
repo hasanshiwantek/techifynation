@@ -186,7 +186,7 @@ const AccountForm = () => {
         </div>
 
         {/* Submit */}
-        <Button type="submit" className="w-64 !p-7 text-2xl border-b-2 border-black bg-[#FF3D3D] text-white font-bold md:mt-8">
+        <Button type="submit" className="w-64 !p-7 text-2xl border-b-2 border-black bg-[#014ec3] text-white font-bold md:mt-8">
          {loading ? "Loading..." : "UPDATE DETAILS"}
         </Button>
       </form>

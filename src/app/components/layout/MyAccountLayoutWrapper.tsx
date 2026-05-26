@@ -47,7 +47,7 @@ const MyAccountTabs = () => {
   </span>
 
   {/* Current Tab */}
-  <span className="text-[#FF3D3D] font-semibold" itemProp="name">
+  <span className="text-[#014ec3] font-semibold" itemProp="name">
     {getActiveTab()}
   </span>
 </div>
@@ -69,7 +69,7 @@ const MyAccountTabs = () => {
  className={`px-4 py-2 text-sm sm:text-[14px] font-medium transition-colors duration-200 uppercase ${
   isActive
     ? "underline underline-offset-4 text-black"
-    : "text-gray-600 hover:text-[#FF3D3D]"      
+    : "text-gray-600 hover:text-[#014ec3]"      
 }`}
 
 

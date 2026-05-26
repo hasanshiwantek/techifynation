@@ -67,7 +67,7 @@ const Pagination = ({
         //                 variant={currentPage === page ? "outline" : "outline"}
         //                 onClick={() => onPageChange(Number(page))}
         //                 className={`pt-[6px] px-[10px] pb-[4px] rounded-none 2xl:text-[12px] border  ${currentPage === page
-        //                     ? " text-[#FF3D3D] border-[#FF3D3D] "
+        //                     ? " text-[#014ec3] border-[#014ec3] "
         //                     : "border-[#545454]"
         //                     }`}
         //             >
@@ -119,7 +119,7 @@ const Pagination = ({
                             variant="outline"
                             onClick={() => onPageChange(Number(page))}
                             className={`pt-[6px] px-[10px] pb-[4px] rounded-none 2xl:text-[12px] border ${currentPage === page
-                                ? "text-[#FF3D3D] border-[#FF3D3D]"
+                                ? "text-[#014ec3] border-[#014ec3]"
                                 : "border-[#545454]"
                                 }`}
                         >

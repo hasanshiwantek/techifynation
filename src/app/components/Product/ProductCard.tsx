@@ -82,7 +82,7 @@ const ProductCard = ({ product }: { product: any }) => {
 
                 <Link href={`/category/${cat?.slug}`}
                   className={`text-[11px] ${index === product.categoryHierarchy.length - 1
-                    ? "!text-[#FF3D3D]"
+                    ? "!text-[#014ec3]"
                     : "text-black"
                     }`}
                   itemProp="name"

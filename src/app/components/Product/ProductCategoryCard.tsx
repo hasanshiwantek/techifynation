@@ -67,16 +67,16 @@ export default function ProductCategoryCard({ product }: { product: Product }) {
       {/* ✅ Product Info */}
       <div className="flex flex-col justify-between p-4 md:h-[171px] h-auto bg-[#F2F2F2]">
         <p className="text-[12px]">
-          <span className="text-[12px] hover:text-[#FF3D3D]">{product?.brand?.name}</span>{" "}
-          <span className="text-[12px] hover:text-[#FF3D3D]">SKU:</span>
-          <span className="text-[12px] hover:text-[#FF3D3D]">{product?.sku}</span>
+          <span className="text-[12px] hover:text-[#014ec3]">{product?.brand?.name}</span>{" "}
+          <span className="text-[12px] hover:text-[#014ec3]">SKU:</span>
+          <span className="text-[12px] hover:text-[#014ec3]">{product?.sku}</span>
         </p>
 
         <Link
           href={`${product?.productUrl}`}
           className="cursor-pointer relative inline-block group"
         >
-          <h3 className="mb-1 text-[20px] font-normal md:line-clamp-2 line-clamp-3 hover:text-[#FF3D3D]">
+          <h3 className="mb-1 text-[20px] font-normal md:line-clamp-2 line-clamp-3 hover:text-[#014ec3]">
             {product?.sku} | {product?.brand?.name} | {product?.name}
           </h3>
         </Link>

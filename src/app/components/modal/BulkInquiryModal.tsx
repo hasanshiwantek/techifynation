@@ -115,7 +115,7 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
           {/* Right Side - Form */}
           <div className="md:w-3/5 p-8 bg-white relative flex flex-col items-center">
             {/* Red Banner with Title + Close */}
-            <div style={{ borderRadius: "49% 51% 51% 49% / 0% 0% 50% 50%" }} className="absolute top-0 right-0 bg-[#FF3D3D] text-white px-6 py-5 w-full flex justify-center items-center">
+            <div style={{ borderRadius: "49% 51% 51% 49% / 0% 0% 50% 50%" }} className="absolute top-0 right-0 bg-[#014ec3] text-white px-6 py-5 w-full flex justify-center items-center">
               <h2 className="text-3xl">Request A Bulk Quote</h2>
             </div>
 
@@ -174,7 +174,7 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#FF3D3D] border-b border-black text-white px-6 py-5 text-2xl rounded-md font-medium hover:bg-[#d94d30] transition-colors duration-200"
+                className="w-full bg-[#014ec3] border-b border-black text-white px-6 py-5 text-2xl rounded-md font-medium hover:bg-[#d94d30] transition-colors duration-200"
               >
                 {loading ? "Submitting..." : "Submit Form"}
               </Button>

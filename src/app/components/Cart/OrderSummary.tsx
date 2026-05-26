@@ -286,7 +286,7 @@ const OrderSummary = () => {
                   type="submit"
                   disabled={loading}
                   className="w-full md:w-[65%] btn-primary"
-                // className="w-full md:w-[65%] p-2 border-b border-black  bg-[#FF3D3D] text-white text-[14px] font-bold"
+                // className="w-full md:w-[65%] p-2 border-b border-black  bg-[#014ec3] text-white text-[14px] font-bold"
                 >
                   {loading ? "Loading..." : "Estimate Shipping"}
                 </button>
@@ -350,7 +350,7 @@ const OrderSummary = () => {
                       window.location.reload(); // Refresh to update totals with new shipping cost
                     }}
                     className="w-full md:w-[55%] text-[18px] btn-primary"
-                  // className="w-full md:w-[65%] p-2 border-b border-black  bg-[#FF3D3D] text-white text-[14px] font-bold"
+                  // className="w-full md:w-[65%] p-2 border-b border-black  bg-[#014ec3] text-white text-[14px] font-bold"
                   >
                     Update Shipping Cost
                   </button>
@@ -414,7 +414,7 @@ const OrderSummary = () => {
 
               <button
                 type="submit"
-                className="border-b border-black px-12 rounded bg-[#FF3D3D] text-white text-[14px] font-bold disabled:opacity-50"
+                className="border-b border-black px-12 rounded bg-[#014ec3] text-white text-[14px] font-bold disabled:opacity-50"
                 disabled={couponLoading}
               >
                 {couponLoading ? "..." : "Apply"}

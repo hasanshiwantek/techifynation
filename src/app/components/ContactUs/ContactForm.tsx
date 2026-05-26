@@ -40,11 +40,11 @@ const ContactForm = () => {
       {/* Breadcrumb */}
       <nav className="mb-6">
         <div className="flex items-center gap-2 text-sm">
-          <Link href="/" className="text-[#FF3D3D] hover:underline">
+          <Link href="/" className="text-[#014ec3] hover:underline">
             Home
           </Link>
           <span className="text-gray-600">/</span>
-          <span className="text-[#FF3D3D]">Contact Form</span>
+          <span className="text-[#014ec3]">Contact Form</span>
         </div>
       </nav>
 

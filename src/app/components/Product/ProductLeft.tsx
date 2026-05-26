@@ -100,7 +100,7 @@ const ProductLeft = ({
                 openLightbox()
               }
             }}
-            className="flex h-full w-full cursor-zoom-in items-center justify-center rounded-xl bg-transparent p-0 text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[#FF3D3D]"
+            className="flex h-full w-full cursor-zoom-in items-center justify-center rounded-xl bg-transparent p-0 text-left outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[#014ec3]"
             aria-label="View product image larger"
           >
             <Image

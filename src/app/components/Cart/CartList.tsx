@@ -119,7 +119,7 @@ const CartList = () => {
                     {item?.brand?.name || "N/A"}
                   </p>
                   <Link href={`${item?.productUrl || "#"}`}>
-                    <p className=" text-[#FF3D3D] underline text-center lg:mx-auto md:mx-auto sm:mx-auto w-[100%] sm:w-[60%]  md:w-[70%] lg:w-[80%] xl:text-start xl:w-[100%] 2xl:w-[100%]">
+                    <p className=" text-[#014ec3] underline text-center lg:mx-auto md:mx-auto sm:mx-auto w-[100%] sm:w-[60%]  md:w-[70%] lg:w-[80%] xl:text-start xl:w-[100%] 2xl:w-[100%]">
                       {item.name}
                     </p>
                   </Link>
@@ -222,7 +222,7 @@ const CartList = () => {
                       setItemToDelete(item);
                       setIsDialogOpen(true);
                     }}
-                    className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#CAC9C9] text-[#FF3D3D] transition hover:bg-[#B8B7B7] hover:text-[#b81a1a]"
+                    className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#CAC9C9] text-[#014ec3] transition hover:bg-[#B8B7B7] hover:text-[#b81a1a]"
                   >
                     <X className="h-4 w-4" strokeWidth={2.25} />
                   </button>
@@ -246,8 +246,8 @@ const CartList = () => {
           className="sm:max-w-[520px] border-none p-0"
         >
           <div className="bg-white px-6 py-12 sm:px-10 sm:py-14 text-center">
-            <div className="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-full border-4 border-[#FF3D3D]">
-              <span className="text-6xl font-extrabold leading-none text-[#FF3D3D]">
+            <div className="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-full border-4 border-[#014ec3]">
+              <span className="text-6xl font-extrabold leading-none text-[#014ec3]">
                 !
               </span>
             </div>
@@ -260,14 +260,14 @@ const CartList = () => {
               <button
                 type="button"
                 onClick={confirmDelete}
-                className="min-w-[85px] bg-[#FF3D3D] px-10 py-3 text-xl font-bold text-white hover:bg-[#b81a1a] transition border-b border-black"
+                className="min-w-[85px] bg-[#014ec3] px-10 py-3 text-xl font-bold text-white hover:bg-[#b81a1a] transition border-b border-black"
               >
                 OK
               </button>
               <button
                 type="button"
                 onClick={() => setIsDialogOpen(false)}
-                className="min-w-[123px] bg-[#FF3D3D] px-10 py-3 text-xl font-bold text-white hover:bg-[#b81a1a] transition border-b border-black"
+                className="min-w-[123px] bg-[#014ec3] px-10 py-3 text-xl font-bold text-white hover:bg-[#b81a1a] transition border-b border-black"
               >
                 CANCEL
               </button>

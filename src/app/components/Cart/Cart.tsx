@@ -23,7 +23,7 @@ const Cart = () => {
           >
             Home
           </span> {" "} <span className="mt-2 mx-3 text-gray-400 text-[11px]" aria-hidden="true">/</span> {" "} <span
-            className="!text-[#FF3D3D] text-[11px]"
+            className="!text-[#014ec3] text-[11px]"
             itemProp="name"
           >
               Your Cart

@@ -211,7 +211,7 @@ const SingleOrder = () => {
           <p>Order status: {order.status}</p>
           <p>Order date: {orderDate}</p>
           <p>Order total: ${total.toFixed(2)}</p>
-          <button className="mt-3 text-2xl font-bold border-b-2 border-black px-4 py-2 bg-[#FF3D3D] text-white rounded-md hover:bg-red-700 transition w-60">
+          <button className="mt-3 text-2xl font-bold border-b-2 border-black px-4 py-2 bg-[#014ec3] text-white rounded-md hover:bg-red-700 transition w-60">
             PRINT INVOICE
           </button>
         </div>

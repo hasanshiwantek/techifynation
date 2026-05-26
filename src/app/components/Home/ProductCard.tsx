@@ -76,14 +76,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Info Wrapper */}
       <div className="px-3 pb-3 flex flex-col flex-1">
         <Link href={`/brand/${brandSlug || ""}`}>
-          <p className="text-[1rem] text-gray-500 hover:text-[#FF3D3D]" style={{ fontFamily: '"Roboto Condensed"' }}
+          <p className="text-[1rem] text-gray-500 hover:text-[#014ec3]" style={{ fontFamily: '"Roboto Condensed"' }}
           >{brandName}</p>
         </Link>
-        <p className="text-[1rem] text-gray-400 mb-1 hover:text-[#FF3D3D]" style={{ fontFamily: '"Roboto Condensed"' }}>
+        <p className="text-[1rem] text-gray-400 mb-1 hover:text-[#014ec3]" style={{ fontFamily: '"Roboto Condensed"' }}>
           Sku: {product.sku}
         </p>
         <Link href={`${product?.productUrl}`}>
-          <p className="text-[14px] font-medium mb-1 line-clamp-2 hover:text-[#FF3D3D]" style={{ fontFamily: '"Roboto Condensed"' }}>
+          <p className="text-[14px] font-medium mb-1 line-clamp-2 hover:text-[#014ec3]" style={{ fontFamily: '"Roboto Condensed"' }}>
             {productName}
           </p>
         </Link>
@@ -95,7 +95,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
 
             {/* New Price */}
-            <span className="text-[1rem] font-bold  " style={{ fontFamily: '"Roboto"' }}>Call for pricing:<Link href="tel:+15022063033" className="text-[#FF3D3D] underline">
+            <span className="text-[1rem] font-bold  " style={{ fontFamily: '"Roboto"' }}>Call for pricing:<Link href="tel:+15022063033" className="text-[#014ec3] underline">
               (502) 206-3033
             </Link></span>
           </>
@@ -145,7 +145,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }
             router.push("/cart")
           }}
-          className="w-full bg-[#CAC9C9] hover:bg-[#FF3D3D] font-bold text-[#393939] border-b-2 border-[#393939] py-1 hover:text-white rounded text-[14px] mt-auto transition">
+          className="w-full bg-[#CAC9C9] hover:bg-[#014ec3] font-bold text-[#393939] border-b-2 border-[#393939] py-1 hover:text-white rounded text-[14px] mt-auto transition">
           {"ADD TO CART"}
         </button>
       </div>

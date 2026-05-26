@@ -49,7 +49,7 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
 
           {/* Brand */}
           <Link href={`/brand/${product?.brand?.slug}`}>
-            <h2 className="text-[14px] sm:text-[14px] md:text-[14px] text-[#545454] font-[400] uppercase hover:text-[#FF3D3D] transition">
+            <h2 className="text-[14px] sm:text-[14px] md:text-[14px] text-[#545454] font-[400] uppercase hover:text-[#014ec3] transition">
               {product?.brand?.name || "N/A"}
             </h2>
           </Link>
@@ -59,7 +59,7 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
         {!availableForSale ? <div>
           <div className="flex flex-col">
             <h2 className="text-[#545454] flex items-center font-bold !text-[22px]" style={{ color: "#545454" }}>
-              Call for pricing: <Link href="tel:+15022063033" className="text-[#FF3D3D] underline">
+              Call for pricing: <Link href="tel:+15022063033" className="text-[#014ec3] underline">
                 (502) 206-3033
               </Link>
             </h2>
@@ -199,7 +199,7 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
         <div className="mb-3 pb-3 border-b border-[#e5e5e5]">
           <button
             onClick={() => setIsReviewModalOpen(true)}
-            className="text-[#393939] font-bold text-[13px] sm:text-[20px] hover:text-[#FF3D3D] underline transition inline-block"
+            className="text-[#393939] font-bold text-[13px] sm:text-[20px] hover:text-[#014ec3] underline transition inline-block"
           >
             Write a Review
           </button>

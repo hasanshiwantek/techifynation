@@ -47,7 +47,7 @@ export default function CategoryFilter({
               className={`
     flex items-center justify-between text-[15px] transition-colors bg-white hover:bg-[#f9f9f9]
     ${isActive
-                  ? "text-[#FF3D3D] font-medium"   // ✅ ACTIVE
+                  ? "text-[#014ec3] font-medium"   // ✅ ACTIVE
                   : "text-[#545454] hover:text-[var(--primary-color)]"
                 }
   `}

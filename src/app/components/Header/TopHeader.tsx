@@ -292,7 +292,7 @@ const TopHeader = () => {
                               e.stopPropagation();
                               const url = item?.brand?.slug || `/${item?.sku}`;
                               handleSelect(`/brand/${url}`);
-                            }} className="text-[1rem] text-[#545454] uppercase hover:text-[#FF3D3D]">
+                            }} className="text-[1rem] text-[#545454] uppercase hover:text-[#014ec3]">
                               {item?.brand?.name || "Brand"}
                             </p>
 
@@ -302,7 +302,7 @@ const TopHeader = () => {
                               e.stopPropagation();
                               const url = item?.productUrl || `/${item?.sku}`;
                               handleSelect(url);
-                            }} className="text-[1rem] text-[#545454] mt-0.5 hover:text-[#FF3D3D]">
+                            }} className="text-[1rem] text-[#545454] mt-0.5 hover:text-[#014ec3]">
                               Sku: {item?.sku || "N/A"}
                             </p>
 
@@ -312,7 +312,7 @@ const TopHeader = () => {
                               e.stopPropagation();
                               const url = item?.productUrl || `/${item?.sku}`;
                               handleSelect(url);
-                            }} className="text-[14px] font-bold text-[#54545F] leading-tight mt-2 line-clamp-2 min-h-[42px] hover:text-[#FF3D3D]">
+                            }} className="text-[14px] font-bold text-[#54545F] leading-tight mt-2 line-clamp-2 min-h-[42px] hover:text-[#014ec3]">
                               {item?.name}
                             </p>
 
@@ -406,11 +406,11 @@ const TopHeader = () => {
               {/* Cart */}
               <div className="relative sm:flex hidden" ref={dropdownRef}>
                 <div className="relative w-[40px]">
-                  <div className="absolute z-[9999] -top-6 -bottom-7 right-0 left-0 bg-[#FF3D3D] hover:bg-[#FF3D3D] border-0 border-b-[3px] border-b-[#FF3D3D] transition cursor-pointer flex items-center justify-center"
+                  <div className="absolute z-[9999] -top-6 -bottom-7 right-0 left-0 bg-[#014ec3] hover:bg-[#014ec3] border-0 border-b-[3px] border-b-[#014ec3] transition cursor-pointer flex items-center justify-center"
                     onClick={() => setIsOpen((prev) => !prev)}
                   >
                     <FaShoppingCart className="w-7 h-7 text-white" />
-                    <span className="absolute top-2 -right-3 bg-[#ffffff] text-[#FF3D3D] text-[10px] rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                    <span className="absolute top-2 -right-3 bg-[#ffffff] text-[#014ec3] text-[10px] rounded-full w-6 h-6 flex items-center justify-center font-bold">
                       {cartItemCount || "0"}
                     </span>
                   </div>
@@ -449,7 +449,7 @@ const TopHeader = () => {
                                       {item?.brand?.name}
                                     </p>
                                   )}
-                                  <p className="text-[13px] font-light text-[#FF3D3D] leading-snug whitespace-pre-line break-words">
+                                  <p className="text-[13px] font-light text-[#014ec3] leading-snug whitespace-pre-line break-words">
                                     {item?.name}
                                   </p>
                                   <p className="text-[#393939] font-bold text-[13px] mt-1">
@@ -468,13 +468,13 @@ const TopHeader = () => {
 
                           <div className="flex gap-2 p-4 pt-6">
                             <button
-                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#FF3D3D] hover:bg-[#b81818] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#FF3D3D] transition uppercase tracking-wide"
+                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#b81818] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
                               onClick={() => handleSelect("/checkout")}
                             >
                               Check Out Now
                             </button>
                             <button
-                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#FF3D3D] hover:bg-[#b81818] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#FF3D3D] transition uppercase tracking-wide"
+                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#b81818] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
                               onClick={() => {
                                 handleSelect("/cart");
                               }}
@@ -490,9 +490,9 @@ const TopHeader = () => {
               </div>
               <div className="relative top-[3px] z-[999] sm:hidden flex" >
                 <Link href="/cart" className="transition block">
-                  <div className="bg-[#FF3D3D] p-2 rounded hover:bg-[#FF3D3D] transition">
+                  <div className="bg-[#014ec3] p-2 rounded hover:bg-[#014ec3] transition">
                     <FaShoppingCart className="w-7 h-7 text-white" />
-                    <span className="absolute top-2 -right-2 bg-white text-[#FF3D3D] text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    <span className="absolute top-2 -right-2 bg-white text-[#014ec3] text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                       {cartItemCount || "0"}
                     </span>
                   </div>

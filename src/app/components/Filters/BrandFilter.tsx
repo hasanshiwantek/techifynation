@@ -24,7 +24,7 @@ export default function BrandFilter({
               }
               className={`
                 w-full text-left px-3 py-1 text-[15px] font-normal transition-colors flex items-center 
-                ${isActive ? "text-[#FF3D3D] font-medium" : "text-[#545454] hover:text-[var(--primary-color)]"}
+                ${isActive ? "text-[#014ec3] font-medium" : "text-[#545454] hover:text-[var(--primary-color)]"}
               `}
             >
               {b.brand.name}

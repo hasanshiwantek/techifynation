@@ -150,13 +150,13 @@ const AddressForm = () => {
 
         {/* Buttons */}
         <div className="flex flex-col md:flex-row gap-4 mt-4">
-          <Button type="submit" className="w-full md:w-[16%] !p-7 text-2xl border-b-2 border-black bg-[#FF3D3D] text-white font-bold">
+          <Button type="submit" className="w-full md:w-[16%] !p-7 text-2xl border-b-2 border-black bg-[#014ec3] text-white font-bold">
             {loading ? "Saving..." : "SAVE ADDRESS"}
           </Button>
           <Button 
             onClick={() => router.back()}
             type="button" 
-            className="w-full md:w-36 !p-7 text-2xl border-b-2 border-black bg-[#FF3D3D] font-bold text-white transition"
+            className="w-full md:w-36 !p-7 text-2xl border-b-2 border-black bg-[#014ec3] font-bold text-white transition"
           >
             Cancel
           </Button>

@@ -17,7 +17,7 @@ export default function OrderSuccessPage() {
   //         <h1 className="text-3xl font-bold mb-4">No order found</h1>
   //         <p>Please place an order first.</p>
   //         <Link href="/cart">
-  //           <button className="mt-4 bg-red-500 hover:bg-[#FF3D3D] text-white font-semibold py-2 px-6 rounded-full">
+  //           <button className="mt-4 bg-red-500 hover:bg-[#014ec3] text-white font-semibold py-2 px-6 rounded-full">
   //             Go to Shop
   //           </button>
   //         </Link>
@@ -105,7 +105,7 @@ export default function OrderSuccessPage() {
 
   //           <button
   //             onClick={handleCheckOrders}
-  //             className="bg-red-500 hover:bg-[#FF3D3D] text-white font-semibold py-3 px-8 rounded-full transition-colors"
+  //             className="bg-red-500 hover:bg-[#014ec3] text-white font-semibold py-3 px-8 rounded-full transition-colors"
   //           >
   //             Check Your Orders
   //           </button>
@@ -177,7 +177,7 @@ export default function OrderSuccessPage() {
         <h1 className="text-3xl font-bold mb-4">No order found</h1>
         <p>Please place an order first.</p>
         <Link href="/cart">
-          <button className="mt-4 bg-red-500 hover:bg-[#FF3D3D] text-white font-semibold py-2 px-6 rounded-full">
+          <button className="mt-4 bg-red-500 hover:bg-[#014ec3] text-white font-semibold py-2 px-6 rounded-full">
             Go to Shop
           </button>
         </Link>
@@ -244,7 +244,7 @@ export default function OrderSuccessPage() {
                     dispatch(clearLastOrder());
                     window.location.href = "/my-account/orders";
                   }}
-                  className="bg-red-500 hover:bg-[#FF3D3D] text-white font-semibold py-3 px-8 rounded-full transition-colors"
+                  className="bg-red-500 hover:bg-[#014ec3] text-white font-semibold py-3 px-8 rounded-full transition-colors"
                 >
                   Check Your Orders
                 </button>

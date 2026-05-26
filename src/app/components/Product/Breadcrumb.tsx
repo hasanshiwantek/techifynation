@@ -60,7 +60,7 @@ const Breadcrumb = ({ items }: BreadcrumbProps) => {
             >
               {index === items.length - 1 ? (
                 <span
-                  className="!text-[#FF3D3D] text-[11px]"
+                  className="!text-[#014ec3] text-[11px]"
                   itemProp="name"
                 >
                   {item.name}
