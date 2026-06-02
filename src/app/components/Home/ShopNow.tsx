@@ -28,7 +28,7 @@ const ShopNow = () => {
             <Link href="/">
               <button
                 type="button"
-                className="bg-[#444444] hover:bg-red-700 transition text-white px-4 py-3 rounded text-2xl"
+                className="bg-[#444444] hover:bg-[#014ec3] transition text-white px-4 py-3 rounded text-2xl"
               >
                 SHOP NOW
               </button>
@@ -63,7 +63,7 @@ const ShopNow = () => {
               <Link href="/">
                 <button
                   type="button"
-                  className="bg-[#444444] hover:bg-red-700 transition text-white px-4 py-3 rounded text-xl md:text-[1.7rem]"
+                  className="bg-[#444444] hover:bg-[#014ec3] transition text-white px-4 py-3 rounded text-xl md:text-[1.7rem]"
                 >
                   SHOP NOW
                 </button>

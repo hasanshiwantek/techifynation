@@ -229,7 +229,7 @@ button {
   @apply bg-[#014ec3] text-white;
 
   /* Border styling - no left, right, top borders, bottom border with darker color */
-  @apply border-0 border-b-[4px] border-b-[#014ec3] rounded-none;
+  @apply border-0 border-b-[4px] border-b-[#0244a7] rounded-none;
 
   /* Spacing */
   @apply px-[2.28571rem] py-[0.85714rem] my-0;
