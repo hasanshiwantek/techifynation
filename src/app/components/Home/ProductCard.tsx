@@ -142,8 +142,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 })
               );
               toast.success(`${product.name} added to cart!`);
+               router.push("/cart")
             }
-            router.push("/cart")
+           
           }}
           className="w-full bg-[#CAC9C9] hover:bg-[#014ec3] font-bold text-[#393939] border-b-2 border-[#393939] py-1 hover:text-white rounded text-[14px] mt-auto transition">
           {"ADD TO CART"}
