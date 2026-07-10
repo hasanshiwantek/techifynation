@@ -3,9 +3,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://backend.sparemicro.com/api/'
-export const storeId = "16";
-// export const storeId = "17";
-
+// export const storeId = "16";
+export const storeId = "17";
+export const sitekey = "6LdD8CgtAAAAADZaKjM6MRA6nQ6VppSfiu2vspFr"
+export const secretkey = "6LdD8CgtAAAAAInOe8Ey4_ByJ8u5KNiVpSJo-C0Q"
 const axiosInstance = axios.create({
   baseURL: baseURL,
 });
@@ -13,6 +14,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const data = localStorage.getItem("persist:auth");
+    const sessionId = localStorage.getItem("sessionId");
     const user = data ? JSON.parse(data) : null
     const token = user?.token ? JSON.parse(user.token) : null;
     if (token) {
@@ -20,6 +22,7 @@ axiosInstance.interceptors.request.use((config) => {
     }
     if (storeId) {
       config.headers["storeId"] = Number(storeId);
+      config.headers["X-Session-ID"] = sessionId
     }
   }
 
@@ -50,9 +53,9 @@ axiosInstance.interceptors.response.use(
 
     const errors = error.response?.data.errors;
     if (errors && typeof errors === "object") {
-      Object.values(errors).forEach((fieldErrors) => {
+      Object.values(errors)?.forEach((fieldErrors) => {
         if (Array.isArray(fieldErrors)) {
-          fieldErrors.forEach((err) =>
+          fieldErrors?.forEach((err) =>
             toast.error(err, {
               style: {
                 fontSize: "12px",

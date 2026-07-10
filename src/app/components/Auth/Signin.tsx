@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import { toast } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi"; // add at top
+import { cartTransfer, fetchCartList } from "@/redux/slices/cartsSlice";
+import { baseURL, storeId } from "@/lib/axiosInstance";
 interface SigninFormValues {
   email: string;
   password: string;
@@ -26,45 +28,66 @@ const SigninPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
+  const auth = useAppSelector((state: RootState) => state?.auth);
   const { loginloading } = useAppSelector((state: RootState) => state?.auth);
   const onSubmit = async (data: SigninFormValues) => {
     try {
       const result = await dispatch(loginUser(data));
       if (loginUser.fulfilled.match(result)) {
-        reset();
-        router.push("/my-account/orders");
+        const token = result?.payload?.token
+        const fetchCartListInner = async () => {
+          const sessionId = localStorage.getItem("sessionId")
+          const res = await fetch(`${baseURL}web/cart/transfer`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "storeId": storeId,
+              "X-Session-ID": sessionId || "",
+              "Content-Type": "application/json",
+            },
+          });
+          reset();
+          dispatch(fetchCartList());
+          router.push("/my-account/orders");
+        };
+        fetchCartListInner()
       } else {
         const errorMessage =
           typeof result?.payload === "string"
             ? result.payload
             : "Login failed. Please try again.";
         toast.error(errorMessage);
-        console.error("❌ Login rejected with message:", errorMessage);
+      
       }
     } catch (err: any) {
-      console.error("🚨 Unexpected error during onSubmit:", err);
+      
     }
   };
+useEffect(() => {
+  const timer = setTimeout(() => {
+    dispatch(fetchCartList());
+  }, 1000);
 
+  return () => clearTimeout(timer); // cleanup
+}, []);
   return (
     <div className=" ">
       {/* Header/Navigation - Dark gray bar at top */}
       <div className=" h-2 w-full  xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-8xl" />
 
       {/* Breadcrumb */}
-      <div className="px-10 xl:px-0  w-full xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-8xl mx-auto  py-4">
-        <div className="flex items-center gap-2 text-sm">
-          <Link href="/" className="text-gray-600 hover:text-gray-900">
+      <div className="pt-0 pb-4 md:py-3 md:px-10 xl:px-0 w-full xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-8xl mx-auto">
+        <div className="hidden md:flex items-center gap-2 text-sm">
+          <Link href="/" className="text-gray-600 hover:text-gray-900 text-[11px]">
             Home
           </Link>
           <span className="text-gray-400">/</span>
-          <span className="text-[var(--primary-color)]">Login</span>
+          <span className="text-[var(--primary-color)] text-[11px]">Login</span>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="  px-10 xl:px-0 xl:max-w-[1170px] 2xl:max-w-[1170px]  mx-auto  py-8">
+      <div className="pt-0 md:px-6 xl:px-0 w-full xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-7xl mx-auto py-8 pb-16">
         <h1 className="h1-lg mb-10">Login</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12">
@@ -82,11 +105,11 @@ const SigninPage = () => {
                 <Input
                   id="email"
                   type="email"
-                  className="w-full h-12 max-w-full"
+                  className="w-full h-12 max-w-full py-[15px] "
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500 mt-1">
+                  <p className="text-sm text-[#014ec3] mt-1">
                     {errors.email.message}
                   </p>
                 )}
@@ -103,7 +126,7 @@ const SigninPage = () => {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"} // toggle type
-                  className="w-full h-12 max-w-full pr-10" // add padding for icon
+                  className="w-full h-12 max-w-full py-[15px] pr-10" // add padding for icon
                   {...register("password", {
                     required: "Password is required",
                   })}
@@ -117,25 +140,25 @@ const SigninPage = () => {
                 </span>
 
                 {errors.password && (
-                  <p className="text-sm text-red-500 mt-1">
+                  <p className="text-sm text-[#014ec3] mt-1">
                     {errors.password.message}
                   </p>
                 )}
               </div>
 
               {/* Login Button and Forgot Password */}
-              <div className="flex  gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 {loginloading ? (
                   <div className="flex justify-center items-center py-3">
                     <div className="w-6 h-6 border-4 border-t-transparent border-red-600 rounded-full animate-spin"></div>
                   </div>
                 ) : (
-                  <button type="submit" className="btn-primary">
+                  <button type="submit" className="btn-primary sm:w-auto">
                     LOGIN
                   </button>
                 )}
                 <Link
-                  href="/forgot-password"
+                  href="/auth/forgot-password"
                   className="text-[#014ec3] hover:text-red-700 text-[14px] underline"
                 >
                   Forgot your password?

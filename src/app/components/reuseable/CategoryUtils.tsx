@@ -35,7 +35,7 @@ export const CategoryItem = ({
 
   return (
     <div>
-      <button
+      <div
         className={`w-full px-3 py-1 flex items-center justify-between transition-colors text-[13px] lg:text-[15px] font-normal
             ${isActive ? "text-[#014ec3]" : "text-[#545454] hover:text-[var(--primary-color)]"}`}
         style={{ paddingLeft: `${level * 12 + 8}px`, paddingRight: "8px" }}
@@ -52,17 +52,20 @@ export const CategoryItem = ({
               e.preventDefault();  // optional
               toggle(category.id);
             }} className="p-1 flex-shrink-0"
+            aria-label={isOpen ? `Collapse ${category.name}` : `Expand ${category.name}`}
+            aria-expanded={isOpen}
+            aria-controls={`subcategory-${category.id}`}
           >
-            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {isOpen ? <ChevronUp className="w-4 h-4" aria-hidden="true" /> : <ChevronDown className="w-4 h-4" aria-hidden="true" />}
           </button>
         )}
-      </button>
+      </div>
 
 
       {/* Render children only if open */}
       {hasChildren && isOpen && (
-        <div className="bg-[#f2f2f2]">
-          {category.subcategories!.map((sub) => (
+        <div className="bg-[#f2f2f2]" id={`subcategory-${category.id}`} >
+          {category?.subcategories!.map((sub) => (
             <CategoryItem
               key={sub.id}
               category={sub}

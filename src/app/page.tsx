@@ -1,86 +1,106 @@
 import type { Metadata } from "next";
-import CategoriesSidebar from "./components/Home/CategoriesSidebar";
-import BrandsSidebar from "./components/Home/BrandsSidebar";
+import dynamic from "next/dynamic";
 import Banner from "./components/Home/Banner";
 import CategoryGrid from "./components/Home/CategoriyGrid";
-import FeaturedProducts from "./components/Home/FeaturedProducts";
-import Brands from "./components/Home/Brands";
-import ShopNow from "./components/Home/ShopNow";
-import Testimonials from "./components/Home/Testimonials";
-import HighPowerSupply from "./components/Home/HighPowerSupply";
+import { fetchWebsiteSeo } from "@/lib/api/storeFront";
+import { fetchCarousels } from "@/lib/api/home";
+import { fetchCategories } from "@/lib/api/category";
+import { fetchBrands } from "@/lib/api/brand";
+import CatProducts from "./components/Home/CatProducts";
 import RightPowerSupply from "./components/Home/RightPowerSupply";
+import HighPowerSupply from "./components/Home/HighPowerSupply";
 import PowerYourPc from "./components/Home/PowerYourPc";
 import PowerSupplyImpact from "./components/Home/PowerSupplyImpact";
-import BlogsList from "./components/Home/BlogList";
-import CatProducts from "./components/Home/CatProducts";
+import BlogsList from "./components/Home/BlogsList";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://techifynation-8g63.vercel.app"),
-  title: "PC, Computer & Server Parts | IT Hardware Store | Techify Nation",
-  // title: "Home | Techify Nation",
-  description:
-    "Welcome to Techify Nation – your one-stop shop for servers, networking equipment, and IT solutions. Get the best prices and fast delivery.",
-  alternates: {
-    canonical: "https://techifynation-8g63.vercel.app",
-  },
-  openGraph: {
-    title: "Techify Nation – Home",
-    description:
-      "Shop servers, networking gear, and IT solutions at Techify Nation. Affordable, reliable, and delivered fast.",
-    url: "https://techifynation-8g63.vercel.app",
-    siteName: "Techify Nation",
-    images: [
-      {
-        url: "/serverblink-logo.png", // Replace with your actual logo
-        width: 1200,
-        height: 630,
-        alt: "Techify Nation Homepage",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Techify Nation – Home",
-    description:
-      "Buy servers, networking equipment, and IT solutions at Techify Nation.",
-    images: ["/serverblink-logo.png"], // Replace with actual logo path
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
+const CategoriesSidebar = dynamic(
+  () => import("./components/Home/CategoriesSidebar"),
+);
+const BrandsSidebar = dynamic(() => import("./components/Home/BrandsSidebar"));
+const FeaturedProducts = dynamic(
+  () => import("./components/Home/FeaturedProducts"),
+);
+const Brands = dynamic(() => import("./components/Home/Brands"));
+const ShopNow = dynamic(() => import("./components/Home/ShopNow"));
+const Testimonials = dynamic(() => import("./components/Home/Testimonials"));
+
+// ✅ Dynamic metadata from backend
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await fetchWebsiteSeo();
+
+  const title = seo?.homePageTitle;
+  const description = seo?.metaDescription;
+  const keywords = seo?.metaKeywords || "";
+  const ogImage = seo?.ogImage;
+
+  return {
+    title: { absolute: title },
+    description,
+    keywords,
+    openGraph: {
+      title,
+      description,
+      siteName: "Techify Nation",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
-
+  };
+}
 const Page = async () => {
+  const [carouselsRes, categoriesRes, brandsRes] = await Promise.allSettled([
+    fetchCarousels(),
+    fetchCategories(),
+    fetchBrands(),
+  ]);
+
+  const carousels =
+    carouselsRes.status === "fulfilled" ? carouselsRes.value : null;
+  const categories =
+    categoriesRes.status === "fulfilled" ? categoriesRes.value : null;
+  const brands = brandsRes.status === "fulfilled" ? brandsRes.value : [];
+
   return (
     <main className="flex flex-col gap-30" role="main">
       {/* Container: max-width 1170px, centered */}
       <div className="w-full max-w-[1170px] mx-auto  lg:px-6 xl:px-0">
-        <div className="py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="md:py-6">
+          <div className="flex flex-col lg:flex-row gap-8">
             {/* Left Sidebar */}
-            <aside className="lg:block hidden lg:col-span-3">
+            <aside className="lg:block hidden" style={{ width: "22%" }}>
               <CategoriesSidebar />
               <BrandsSidebar />
             </aside>
             {/* Main Content */}
-            <div className="lg:col-span-9">
-              <Banner />
-              <CategoryGrid />
+            <div className="w-full lg:w-[78%] p-0">
+              <Banner
+                carousels={carousels?.slides}
+                settings={carousels?.settings}
+              />
+              <CategoryGrid
+                categories={(categories?.data ?? categories)?.slice(0, 5)}
+              />
               <CatProducts
                 endpoint="web/products/featured-products"
                 isSlider={true}
                 title={"Featured Products".toUpperCase()}
               />
-
               <RightPowerSupply />
               <HighPowerSupply />
               <PowerYourPc />

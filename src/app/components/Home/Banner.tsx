@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Carousel,
   CarouselContent,
@@ -10,57 +11,20 @@ import {
   CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import Image from "next/image";
-import bannerImg1 from "@/assets/banner/banner-img1.jpg";
-import bannerImg2 from "@/assets/banner/banner-img2.jpg";
-import bannerImg3 from "@/assets/banner/banner-img3.jpg";
-import bannerImg4 from "@/assets/banner/banner-img4.jpg";
+import { useRouter } from "next/navigation";
 
-const bannerSlides = [
-  {
-    id: 1,
-    title: "Reliable and Efficient",
-    subtitle: "Get reliable and efficient storage solutions for your server",
-    buttonText: "SHOP NOW",
-    image: bannerImg1,
-    gradient: "from-slate-900/70 to-slate-800/50",
-  },
-  {
-    id: 2,
-    title: "YOUR SERVER PARTS PARTNER",
-    subtitle: "Find the perfect server parts to fit your needs.",
-    buttonText: "SHOP NOW",
-    image: bannerImg2,
-    gradient: "from-blue-900/70 to-blue-800/50",
-  },
-  {
-    id: 3,
-    title: "Server Upgrade",
-    subtitle: "Upgrade your server with the latest parts.",
-    buttonText: "SHOP NOW",
-    image: bannerImg3,
-    gradient: "from-slate-900/70 to-slate-700/50",
-  },
-  {
-    id: 4,
-    title: "Easy-to-install Parts",
-    subtitle:
-      "Shop with confidence, knowing our server parts are backed by our satisfaction guarantee",
-    buttonText: "SHOP NOW",
-    image: bannerImg4,
-    gradient: "from-gray-900/70 to-gray-800/50",
-  },
-];
+const robotoCondensedStyle = { fontFamily: "var(--font-roboto-condensed)" };
+const roboto = "var(--font-roboto-condensed), Arial, Helvetica, sans-serif";
 
-const Banner = () => {
+const Banner = ({ carousels, settings }: any) => {
+  const router = useRouter();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-
-  const plugin = React.useRef(
+  const plugin = useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) {
       return;
     }
@@ -71,6 +35,9 @@ const Banner = () => {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
+
+
+  if (!carousels?.length) return null
 
   return (
     <div className="relative w-full">
@@ -86,33 +53,43 @@ const Banner = () => {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-          {bannerSlides.map((slide, index) => (
+          {carousels?.map((slide: any, index: number) => (
             <CarouselItem key={slide.id}>
               <div className="relative flex w-full flex-col overflow-hidden rounded-xs sm:block md:h-[312px] md:w-[913px] sm:h-[320px]">
                 {/* Image (mobile: top only; sm+: full slide background) */}
                 <div className="relative h-[105px] w-full shrink-0 sm:absolute sm:inset-0 sm:h-full">
                   <Image
                     src={slide.image}
-                    alt={slide.title}
+                    alt={slide.altText}
                     fill
+                    sizes="(max-width: 640px) 100vw, 913px"
                     className="object-cover"
+                    quality={75}
                     priority={index === 0}
-                    quality={90}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "low"}
                   />
                 </div>
 
                 {/* Mobile: copy below image on gray */}
                 <div className="bg-[#393939] px-6 py-5 text-left sm:hidden">
-                  <h1 className="mb-3 text-xl font-bold leading-tight text-white">
-                    {slide.title}
+                  <h1
+                    className="mb-3 text-xl font-bold leading-tight text-white"
+                    style={robotoCondensedStyle}
+                  >
+                    {slide.heading}
                   </h1>
-                  <p className="mb-5 max-w-xl text-base font-semibold text-white">
-                    {slide.subtitle}
+                  <p
+                    className="mb-5 max-w-xl text-base font-semibold text-white"
+                    style={robotoCondensedStyle}
+                  >
+                    {slide.text}
                   </p>
                   <button
                     type="button"
-                    onClick={() => window.location.reload()}
-                    className="rounded bg-[var(--primary-color)] px-5 py-2 text-base font-bold uppercase tracking-wide text-white shadow-md transition-colors duration-200"
+                    onClick={() => router.push(slide?.link)}
+                    className="inline-flex items-center justify-center rounded bg-[var(--primary-color)] border-0 border-b-[3px] border-b-[#014ec3] box-border h-[30px] px-5 text-[18px] font-bold uppercase tracking-wide text-white shadow-md transition-colors duration-200"
+                    style={robotoCondensedStyle}
                   >
                     {slide.buttonText}
                   </button>
@@ -121,16 +98,23 @@ const Banner = () => {
                 {/* sm+: overlay on image (absolute so it stacks over full-bleed image) */}
                 <div className="absolute inset-0 z-[1] hidden items-center px-6 sm:flex md:px-12 lg:px-16">
                   <div className="max-w-2xl text-left text-white">
-                    <h1 className="h1-bold mb-3 drop-shadow-2xl md:mb-4 md:leading-tight">
-                      {slide.title}
+                    <h1
+                      className="h1-bold mb-3 drop-shadow-2xl md:mb-4 md:leading-tight"
+                      style={robotoCondensedStyle}
+                    >
+                      {slide.heading}
                     </h1>
-                    <p className="mb-6 max-w-xl text-base font-bold text-gray-100 drop-shadow-lg md:mb-8 md:text-[18px]">
-                      {slide.subtitle}
+                    <p
+                      className="mb-6 max-w-xl text-base font-bold text-gray-100 drop-shadow-lg md:mb-8 md:text-[18px]"
+                      style={robotoCondensedStyle}
+                    >
+                      {slide.text}
                     </p>
                     <button
                       type="button"
-                      onClick={() => window.location.reload()}
-                      className="rounded bg-[var(--primary-color)] px-5 py-2.5 text-base font-bold uppercase tracking-wide text-white shadow-xl transition-colors duration-200 md:py-2 md:text-[15px]"
+                      onClick={() => router.push(slide?.link)}
+                      className="inline-flex items-center justify-center rounded bg-[var(--primary-color)] border-0 border-b-[3px] border-b-[#014ec3] box-border h-[30px] px-5 text-[18px] font-bold uppercase tracking-wide text-white shadow-xl transition-colors duration-200"
+                      style={robotoCondensedStyle}
                     >
                       {slide.buttonText}
                     </button>
@@ -145,15 +129,16 @@ const Banner = () => {
 
         {/* Navigation Dots - Bottom Right (sits on gray strip on mobile) */}
         <div className="absolute bottom-0.5 right-0 z-10 flex gap-2 bg-[#CAC9C9] p-2 px-3 sm:bottom-0.5">
-          {bannerSlides.map((_, index) => (
+          {carousels?.map((_: any, index: number) => (
             <button
               key={index}
+              type="button"
+              aria-label={`Go to slide ${index + 1}`}
               onClick={() => api?.scrollTo(index)}
               className={`w-4 h-4 rounded-full transition-all duration-300 ${current === index
-                  ? "bg-[#014ec3] w-3"
-                  : "bg-white/60 hover:bg-white/90"
+                ? "bg-[#014ec3] w-3"
+                : "bg-white/60 hover:bg-white/90"
                 }`}
-              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
@@ -165,9 +150,17 @@ const Banner = () => {
 
       {/* Promo Banner Below Carousel */}
       <div className="bg-white text-center py-3 mt-6 rounded-xs border-b-3 border-[#8b8b8b]">
-        <p className="text-base md:text-[18px]  text-[#8b8b8b] font-medium">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non, tenetur.
-          
+        <p
+          className="text-base md:text-[18px] text-[#545454] font-medium"
+          style={{ fontFamily: roboto }}
+        >
+          $10 off on First Order: Code:{" "}
+          <span
+            className="text-base md:text-[18px] text-[#545454] font-medium"
+            style={{ fontFamily: roboto }}
+          >
+            FIRSTORDER
+          </span>
         </p>
       </div>
     </div>

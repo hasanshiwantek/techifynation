@@ -219,7 +219,7 @@ const CatProducts: React.FC<CatProductsProps> = ({
 
             {/* Error - Stop rendering here if error */}
             {localError && (
-                <div className="text-red-500 text-center py-4">{localError}</div>
+                <div className="text-[#014ec3] text-center py-4">{localError}</div>
             )}
 
             {/* Only render loading/products if NO error */}

@@ -32,15 +32,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const brands = await fetchBrands();
   const brand = findBrandBySlug(brands, slug);
   const formattedBrand =
-    brand?.brand?.name ||
+    brand?.brand?.page_title ||
     slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
   const title = `${formattedBrand}`;
-  const description = `Browse our collection of ${formattedBrand}. Genuine components, affordable prices, and fast shipping.`;
+  const description = brand?.brand?.meta_description;
 
   return {
-    title,
-    description,
+    title: {
+      absolute: title
+    },
+    description: description,
     alternates: {
       canonical: `https://techifynation-8g63.vercel.app/brand/${slug}`,
     },
@@ -81,3 +83,4 @@ export default async function BrandPage({ params }: Props) {
     />
   );
 }
+

@@ -93,7 +93,7 @@ const PopularProducts = () => {
             ))}
           </main>
         ) : error ? (
-          <p className="text-center text-red-500">Failed to load products.</p>
+          <p className="text-center text-[#014ec3]">Failed to load products.</p>
         ) : filteredProducts.length > 0 ? (
           <main
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
@@ -118,7 +118,7 @@ const PopularProducts = () => {
                   >
                     <Link
                       href={`/${product?.sku}`}
-                      className="relative inline-block cursor-pointer group"
+                      className="relative inline-block cursor-pointer group " 
                     >
                       <Image
                         src={
@@ -132,7 +132,7 @@ const PopularProducts = () => {
                         className="object-contain h-full w-auto  xl:h-[185px] lg:h-[185px] md:h-[185px]"
                         loading="lazy"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                        quality={80}
+                        quality={80}fetchPriority="high"
                       />
                     </Link>
                   </div>

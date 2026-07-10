@@ -1,5 +1,7 @@
 "use client";
 
+import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import countries from "world-countries";
 import {
@@ -17,6 +19,8 @@ import { registerUser } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { Country, State, City } from "country-state-city";
+import { fetchCartList } from "@/redux/slices/cartsSlice";
+import { baseURL, sitekey, storeId } from "@/lib/axiosInstance";
 
 interface SignupFormValues {
   firstName: string;
@@ -55,7 +59,7 @@ const SignupPage = () => {
     setValue,
     formState: { errors },
   } = useForm<SignupFormValues>();
-
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const { registerLoading } = useAppSelector((state: RootState) => state?.auth);
   const router = useRouter();
@@ -77,6 +81,11 @@ const SignupPage = () => {
     }));
   }, [watchedCountry, watchedState]);
   const onSubmit = async (data: SignupFormValues) => {
+    if (!captchaToken) {
+      alert("Please verify the captcha.");
+      return;
+    }
+
     try {
       const payload = {
         userRole: 2,
@@ -85,15 +94,30 @@ const SignupPage = () => {
       const result = await dispatch(registerUser(payload));
 
       if (registerUser.fulfilled.match(result)) {
-        reset();
-        router.push("/auth/login");
+        const token = result?.payload?.token
+        const fetchCartListInner = async () => {
+          const sessionId = localStorage.getItem("sessionId")
+          const res = await fetch(`${baseURL}web/cart/transfer`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "storeId": storeId,
+              "X-Session-ID": sessionId || "",
+              "Content-Type": "application/json",
+            },
+          });
+          reset();
+          dispatch(fetchCartList());
+          router.push("/action");
+        };
+        fetchCartListInner()
       } else {
         const errorMessage =
           result.payload || "Registration failed. Please try again.";
-        console.error("Registration failed:", errorMessage);
+       
       }
     } catch (err: any) {
-      console.error("🚨 Unexpected error:", err);
+     
     }
   };
 
@@ -121,8 +145,8 @@ const SignupPage = () => {
       <div className=" w-full" />
 
       {/* Breadcrumb */}
-      <div className="  px-10 xl:px-0  w-full  xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-7xl mx-auto py-4">
-        <div className="flex items-center gap-2 text-sm">
+      <div className="  md:px-10 xl:px-0  w-full  xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-7xl mx-auto py-4">
+        <div className="hidden md:flex items-center gap-2 text-sm mb-2">
           <Link href="/" className="text-gray-600 hover:text-gray-900">
             Home
           </Link>
@@ -132,7 +156,7 @@ const SignupPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className=" px-10 xl:px-0  w-full  xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-7xl mx-auto  py-8 pb-16">
+      <div className="pt-0 pb-[8px] md:py-8 md:pb-16 md:px-6 xl:px-0 w-full xl:max-w-[1170px] 2xl:max-w-[1170px] max-w-7xl mx-auto">
         <h1 className="h1-lg !font-light text-[28px] mb-2">New Account</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -158,7 +182,7 @@ const SignupPage = () => {
                 {...register("email", { required: "Email is required" })}
               />
               {errors.email && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.email.message}
                 </p>
               )}
@@ -182,7 +206,7 @@ const SignupPage = () => {
                 {...register("password", { required: "Password is required" })}
               />
               {errors.password && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.password.message}
                 </p>
               )}
@@ -212,7 +236,7 @@ const SignupPage = () => {
                 })}
               />
               {errors.password_confirmation && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.password_confirmation.message}
                 </p>
               )}
@@ -238,7 +262,7 @@ const SignupPage = () => {
                 })}
               />
               {errors.firstName && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.firstName.message}
                 </p>
               )}
@@ -262,7 +286,7 @@ const SignupPage = () => {
                 {...register("lastName", { required: "Last name is required" })}
               />
               {errors.lastName && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.lastName.message}
                 </p>
               )}
@@ -320,7 +344,7 @@ const SignupPage = () => {
                 })}
               />
               {errors.addressLine1 && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.addressLine1.message}
                 </p>
               )}
@@ -365,7 +389,7 @@ const SignupPage = () => {
                 {...register("suburb", { required: "Suburb/City is required" })}
               />
               {errors.suburb && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.suburb.message}
                 </p>
               )}
@@ -400,7 +424,7 @@ const SignupPage = () => {
                 </SelectContent>
               </Select>
               {errors.country && (
-                <p className="mt-1 text-[14px] text-red-500">Country is required</p>
+                <p className="mt-1 text-[14px] text-[#014ec3]">Country is required</p>
               )}
             </div>
 
@@ -442,7 +466,7 @@ const SignupPage = () => {
                 {...register("state")}
               />}
               {errors.state && stateList?.length > 0 && (
-                <p className="mt-1 text-[14px] text-red-500">
+                <p className="mt-1 text-[14px] text-[#014ec3]">
                   {errors.state.message}
                 </p>
               )}
@@ -450,7 +474,7 @@ const SignupPage = () => {
           </div>
 
           {/* Zip/Postcode - Full Width */}
-          <div className="max-w-[calc(50%-1rem)]">
+          <div className="w-full md:max-w-[calc(50%-1rem)]">
             <div className="flex justify-between items-center">
 
               <label
@@ -469,10 +493,17 @@ const SignupPage = () => {
               {...register("zip", { required: "Zip/Postcode is required" })}
             />
             {errors.zip && (
-              <p className="mt-1 text-[14px] text-red-500">{errors.zip.message}</p>
+              <p className="mt-1 text-[14px] text-[#014ec3]">{errors.zip.message}</p>
             )}
           </div>
-
+          <div className="mt-6">
+            <ReCAPTCHA
+              sitekey={sitekey}
+              onChange={(token: any) => {
+                setCaptchaToken(token);
+              }}
+            />
+          </div>
           {/* Submit Button */}
           <div className="py-6">
             {registerLoading ? (
@@ -480,7 +511,7 @@ const SignupPage = () => {
                 <div className="w-6 h-6 border-4 border-t-transparent border-red-600 rounded-full animate-spin"></div>
               </div>
             ) : (
-              <button type="submit" className="btn-primary px-[30px]">
+              <button type="submit" className="btn-primary w-full sm:w-auto  px-[30px]">
                 CREATE ACCOUNT
               </button>
             )}

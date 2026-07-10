@@ -40,7 +40,7 @@ const BlogCategories = ({
   const showPagination = totalPages > 1;
   return (
     <div className="flex flex-col items-start w-full ">
-        <h2 className=""><span
+        <h2 className="hidden md:flex"><span
                   className="text-[11px]"
                   itemProp="name"
                 >
@@ -60,7 +60,7 @@ const BlogCategories = ({
     // Skeleton Loader for 3 items
     <BlogSkeleton />
   ) : error ? (
-    <div className="w-full py-10 text-center text-red-500 font-medium">
+    <div className="w-full py-10 text-center text-[#014ec3] font-medium">
       {error || "Something went wrong while fetching blogs."}
     </div>
   ) : blogPosts && blogPosts.length > 0 ? (
@@ -88,6 +88,7 @@ const BlogCategories = ({
           transition-transform duration-500 ease-out
           group-hover:scale-110
         "
+        fetchPriority="high"
       />
       {/* Dark overlay */}
       <div className="

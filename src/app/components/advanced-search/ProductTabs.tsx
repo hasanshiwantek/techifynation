@@ -24,6 +24,7 @@ export default function ProductTabs({ tabs, activeTab: controlledActive, onTabCh
     { label: "SHOW SEARCH FORM", isDivided: true },
   ];
 
+  
   const items = tabs || defaultTabs;
 
   const handleClick = (index: number) => {
@@ -35,18 +36,18 @@ export default function ProductTabs({ tabs, activeTab: controlledActive, onTabCh
   };
 
   return (
-    <div className="flex items-center w-full justify-center gap-3.5 border-b border-gray-200 pb-2 mt-2 text-[14px] font-light">
+    <div className="flex flex-col md:flex-row items-center w-full justify-center gap-1 border-b border-gray-200 pb-3 mt-0 text-[14px] font-light  sm:gap-3.5">
       {items.map((tab, index) => (
-        <div key={index} className="flex items-center gap-3.5">
+        <div key={index} className="flex items-center gap-3.5 roboto-font">
           {tab.isDivided && (
-            <div className="w-px h-7 bg-gray-400" />
+            <div className="hidden md:flex w-px h-7 bg-gray-400" />
           )}
           <button
             onClick={() => handleClick(index)}
             className={`uppercase tracking-wide transition-colors ${
               activeIndex === index
                 ? "text-[#014ec3] border-b-1 border-[#014ec3] "
-                : "text-gray-500 hover:text-gray-700"
+                : "text-[#393939]  hover:text-[#393939]"
             }`}
           >
             {tab.label}

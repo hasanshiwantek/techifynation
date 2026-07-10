@@ -21,7 +21,7 @@ export const getBlogById = createAsyncThunk(
   async ({ id }: { id: any }, thunkAPI) => {
     try {
       const res = await axiosInstance.get(`web/blogs/blog-posts/${id}`);
-      console.log("Blogs data by id: ", res.data);
+
 
       return res.data;
     } catch (err: any) {
@@ -46,13 +46,27 @@ export const getWebPages = createAsyncThunk(
     }
   }
 );
+export const getWebsiteSeo = createAsyncThunk(
+  "storeFront/get-website-seo",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`web/store-setting/get-website-seo`);
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to fetch web pages"
+      );
+    }
+  }
+);
 
 export const getWebPageById = createAsyncThunk(
   "storeFront/getWebPageById",
   async ({ id }: { id: any }, thunkAPI) => {
     try {
       const res = await axiosInstance.get(`web/webpages/web-pages/${id}`);
-      console.log("Web Pages data by id: ", res.data);
+
 
       return res.data;
     } catch (err: any) {
@@ -64,11 +78,27 @@ export const getWebPageById = createAsyncThunk(
   }
 );
 
+
+export const visitorSession = createAsyncThunk(
+  "visitor-session",
+  async (data: any, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post("web/visitor-session", data);
+
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Login failed"
+      );
+    }
+  }
+);
 // 2. Initial State
 const initialState = {
   blogs: [],
   singleBlog: [],
   webPages: [],
+  websiteSeo: null,
   singleWebPage: [],
   loading: false,
   error: null as string | null,
@@ -119,6 +149,23 @@ const storeFrontSlice = createSlice({
 
       })
       .addCase(getWebPages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+
+      // get Website Seo 
+      // 
+      .addCase(getWebsiteSeo.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getWebsiteSeo.fulfilled, (state, action) => {
+        state.websiteSeo = action?.payload;
+        state.loading = false;
+
+      })
+      .addCase(getWebsiteSeo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

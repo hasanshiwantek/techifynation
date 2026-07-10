@@ -13,6 +13,7 @@ import { fetchCategories } from "@/lib/api/category";
 import { clearSearch, globalSearch, setSearchQuery, setShowSearchDropdown } from "@/redux/slices/homeSlice";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { fetchCartList } from "@/redux/slices/cartsSlice";
 
 
 interface Category {
@@ -21,27 +22,25 @@ interface Category {
   slug: string;
   subcategories: Category[];
 }
-const isMobile = window.innerWidth < 768;
+// const isMobile = window.innerWidth < 768;
 
 const TopHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const cart = useAppSelector((state: RootState) => state?.cart?.items);
+  const cart = useAppSelector((state: RootState) => state?.carts?.items);
   const auth = useAppSelector((state: RootState) => state?.auth);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [expandedCategory, setExpandedCategory] = useState<number | null>(null);
-  const [searchCache, setSearchCache] = useState<{ [key: string]: any[] }>({});
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   const [query, setQuery] = useState("");
-  // const { searchData, loading } = useAppSelector((state: any) => state.home);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const cartItemCount =
-    cart?.reduce((sum, item: any) => sum + (item?.quantity ?? 1), 0) ?? 0;
-  const [results, setResults] = useState<any[]>([]);
+    cart?.reduce((sum: any, item: any) => sum + (item?.quantity ?? 1), 0) ?? 0;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
   const { searchQuery, showSearchDropdown, searchData, loading } = useAppSelector((state: any) => state.home);
@@ -58,29 +57,18 @@ const TopHeader = () => {
   };
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > 100) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 100);
+        ticking = false;
+      });
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-
-  const handleSearch = (e?: any) => {
-    e?.preventDefault();
-    const trimmed = searchQuery.trim();
-    if (trimmed.length > 1) {
-      dispatch(globalSearch({ query: trimmed }));
-    }
-  };
 
   // Fetch categories
   useEffect(() => {
@@ -95,39 +83,22 @@ const TopHeader = () => {
   };
   const handleSelect = (url: string) => {
     dispatch(clearSearch());
-    setQuery("");
-    setShowDropdown(false);
     setIsOpen(false);
     router.push(url);
   };
-  useEffect(() => {
-    if (searchData?.data) {
-      const mapped = searchData.data.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        slug: item.categories?.[0]?.slug || item.slug,
-        brand: item.brand?.name || "N/A",
-        sku: item.sku || "N/A",
-        price: item.price || item.costPrice || "0.00",
-        url: `/${item?.sku}`,
-        productUrl: `${item?.productUrl}`,
-      }));
 
-      setResults(mapped);
-      setShowDropdown(true);
+   useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
-      const cacheKey = query.trim().toLowerCase();
-      if (cacheKey.length > 1) {
-        setSearchCache((prev) => ({ ...prev, [cacheKey]: mapped }));
-      }
-    }
-  }, [searchData]);
+ 
   // Hide dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setShowDropdown(false);
-        setQuery("");
         dispatch(setShowSearchDropdown(false));
       }
     };
@@ -163,8 +134,7 @@ const TopHeader = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-
+ 
   return (
     <>
       <header
@@ -178,7 +148,10 @@ const TopHeader = () => {
               className={`md:flex hidden items-center whitespace-nowrap space-x-2 md:space-x-3 transition-all duration-300 flex-1 ${isScrolled ? "hidden" : "flex"
                 }`}
             >
-              <p className="ml-2 font-bold text-[14px]">
+              <p
+                className="font-bold text-[14px] roboto-condensed-font "
+
+              >
                 $10 off on First Order: Code: FIRSTORDER
               </p>
             </div>
@@ -208,12 +181,12 @@ const TopHeader = () => {
                       dispatch(clearSearch());
                       if (q) {
                         localStorage.setItem("advancedSearchFilters", JSON.stringify({ q }));
-                         window.dispatchEvent(new Event("searchFiltersUpdated"));
-                          if (pathname === "/advanced-search") {
-   window.location.reload()
-      } else {
-        router.push(`/advanced-search`);
-      }
+                        window.dispatchEvent(new Event("searchFiltersUpdated"));
+                        if (pathname === "/advanced-search") {
+                          window.location.reload()
+                        } else {
+                          router.push(`/advanced-search`);
+                        }
                         // setTimeout(() => {
                         //   window.location.reload()
                         // },100)
@@ -231,13 +204,13 @@ const TopHeader = () => {
                     dispatch(clearSearch());
                     if (q) {
                       localStorage.setItem("advancedSearchFilters", JSON.stringify({ q }));
-                       window.dispatchEvent(new Event("searchFiltersUpdated"));
-                           if (pathname === "/advanced-search") {
-   window.location.reload()
-      } else {
-        router.push(`/advanced-search`);
-      }
-                 
+                      window.dispatchEvent(new Event("searchFiltersUpdated"));
+                      if (pathname === "/advanced-search") {
+                        window.location.reload()
+                      } else {
+                        router.push(`/advanced-search`);
+                      }
+
                       // router.push(`/advanced-search?q=${q}`);
                     }
                   }}
@@ -273,7 +246,7 @@ const TopHeader = () => {
                             <Image
                               src={item?.image?.[0]?.path || "/default-product-image.svg"}
                               alt={item?.name || "product"}
-                              width={145}
+                              width={145} fetchPriority="high"
                               height={125}
                               onMouseDown={(e) => {
                                 e.preventDefault();
@@ -341,7 +314,7 @@ const TopHeader = () => {
                                 handleSelect(url);
                               }}
                               // className="mt-4 w-full bg-[#cccccc] hover:bg-[#bbbbbb] text-[#333] font-bold text-[14px] uppercase py-3 tracking-widest transition-all active:bg-gray-400 btn-pri"
-                              className="font-bold text-[14px] font-roboto-condensed leading-4 uppercase font-robot border-b-[4px] border-b-[#393939] bg-[#cac9c9] text-[#393939] rounded-none hover:bg-[#0244a7] hover:border-b-[#0244a7] hover:text-white px-[2.28571rem] py-[0.85714rem] my-0"
+                              className="font-bold text-[14px] font-roboto-condensed leading-4 uppercase font-robot border-b-[4px] border-b-[#393939] bg-[#cac9c9] text-[#393939] rounded-none hover:bg-[#014ec3] hover:border-b-[#6b0107] hover:text-white px-[2.28571rem] py-[0.85714rem] my-0"
                             >
                               VIEW DETAILS
                             </button>
@@ -382,20 +355,32 @@ const TopHeader = () => {
                 {auth?.isAuthenticated ? (
                   <button
                     onClick={handleLogout}
-                    className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition"
+                    className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition roboto-condensed-only-font"
+
                   >
                     Logout
                   </button>
                 ) : (
                   <>
                     <Link href="/auth/login">
-                      <button className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition">
+                      <button
+                        className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition roboto-condensed-font"
+
+                      >
                         Login
                       </button>
                     </Link>
-                    <span className="font-bold">or</span>
+                    <span
+                      className="font-bold roboto-font"
+
+                    >
+                      or
+                    </span>
                     <Link href="/auth/signup">
-                      <button className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition">
+                      <button
+                        className="font-bold text-[12px] sm:text-[14px] hover:text-gray-300 transition roboto-condensed-font"
+
+                      >
                         Sign Up
                       </button>
                     </Link>
@@ -435,11 +420,13 @@ const TopHeader = () => {
                                 return acc;
                               }, {})
                             ).map((item) => (
-                              <Link key={item?.id} href={item?.productUrl} onClick={() => setIsOpen(false)} className=" px-2 flex gap-3 items-center cursor-pointer border-b border-gray-300 pb-1 last:border-b-0">
+                              <Link key={item?.id} href={item?.productUrl || "#"} onClick={() => setIsOpen(false)} className=" px-2 flex gap-3 items-center cursor-pointer border-b border-gray-300 pb-1 last:border-b-0">
                                 <div className="w-16 h-16 flex-shrink-0 border border-gray-100 rounded-none">
-                                  <img
+                                  <Image
                                     src={item?.image?.[0]?.path || "/default-product-image.svg"}
                                     alt={item?.name}
+                                    width={64} fetchPriority="high"
+                                    height={64}
                                     className="w-full h-full object-contain"
                                   />
                                 </div>
@@ -468,13 +455,13 @@ const TopHeader = () => {
 
                           <div className="flex gap-2 p-4 pt-6">
                             <button
-                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#0244a7] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
+                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#014ec3] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
                               onClick={() => handleSelect("/checkout")}
                             >
                               Check Out Now
                             </button>
                             <button
-                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#0244a7] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
+                              className="flex-1 font-[var(--font-roboto-condensed)] font-bold bg-[#014ec3] hover:bg-[#014ec3] text-white text-[1rem] py-2.5 px-4 border-0 border-b-[3px] border-b-[#014ec3] transition uppercase tracking-wide"
                               onClick={() => {
                                 handleSelect("/cart");
                               }}
@@ -490,7 +477,7 @@ const TopHeader = () => {
               </div>
               <div className="relative top-[3px] z-[999] sm:hidden flex" >
                 <Link href="/cart" className="transition block">
-                  <div className="bg-[#014ec3] p-2 rounded hover:bg-[#014ec3] transition">
+                  <div className="bg-[#014ec3] p-2 rounded hover:bg-red-700 transition">
                     <FaShoppingCart className="w-7 h-7 text-white" />
                     <span className="absolute top-2 -right-2 bg-white text-[#014ec3] text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                       {cartItemCount || "0"}

@@ -1,33 +1,43 @@
-import type { Metadata, ResolvingMetadata } from "next";
-import Script from "next/script";
-import { headers } from "next/headers";
-import dynamic from "next/dynamic";
-import { fetchProductBySlug, fetchProductBySlugAndUrl, fetchProducts, fetchWebPages } from "@/lib/api/products";
-import ProductCard from "@/app/components/Product/ProductCard";
-import ProductOverview from "@/app/components/Product/ProductOverview";
-import ProductExtras from "@/app/components/Product/ProductExtras";
+import type { Metadata } from "next";
 import { Suspense } from "react";
-import CategoriesSidebar from "../components/Home/CategoriesSidebar";
-import BrandsSidebar from "../components/Home/BrandsSidebar";
-import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
+import Script from "next/script";
+import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { fetchProductBySlugAndUrl, fetchWebPages } from "@/lib/api/products";
+import ProductCard from "../components/Product/ProductCard";
+const CategoriesSidebar = dynamic(
+  () => import("../components/Home/CategoriesSidebar")
+);
 
-// ✅ Dynamic metadata for SEO
+const BrandsSidebar = dynamic(
+  () => import("../components/Home/BrandsSidebar")
+);
+const ProductExtras = dynamic(
+  () => import("../components/Product/ProductExtras")
+);
+const ProductOverview = dynamic(
+  () => import("../components/Product/ProductOverview")
+);
+// const ProductCard = dynamic(
+//   () => import("../components/Product/ProductCard")
+// );
+const DynamicWebPage = dynamic(
+  () => import("../components/Product/DynamicWebPage")
+);
+//  Dynamic metadata for SEO
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params; // <-- await here
+  const { slug } = await params;
   const headersList = await headers();
 
-  // ✅ Most reliable - Next.js sets this automatically
-  const fullUrl = headersList.get("x-full-url");
   const pathname: any = headersList.get("x-pathname");
-
-
   const product = await fetchProductBySlugAndUrl(pathname);
   const webPages = await fetchWebPages(pathname);
+
   if (!product && !webPages) {
     notFound();
   }
@@ -36,7 +46,9 @@ export async function generateMetadata({
 
   if (webPages) {
     return {
-      title: `${webPages.pageTitle || webPages.pageName} | Techify Nation`,
+      title: {
+        absolute: webPages.pageTitle || webPages.pageName,  // ← changed
+      },
       description:
         webPages.metaDescription?.substring(0, 160) ||
         webPages.pageName,
@@ -58,11 +70,11 @@ export async function generateMetadata({
     };
   }
   return {
-    title: `${product.pageTitle || product.name} | Techify Nation`,
+    title: {
+      absolute: product.pageTitle || product.name,  // ← changed
+    },
     description:
-      product.metaDescription?.substring(0, 160) ||
-      product.description?.substring(0, 160) ||
-      "Buy quality servers, networking equipment, and IT solutions at Techify Nation.",
+      product.metaDescription?.substring(0, 160),
     keywords:
       product.searchKeywords ||
       `${product.name}, ${product.brand?.name}, Techify Nation`,
@@ -71,9 +83,9 @@ export async function generateMetadata({
     },
     openGraph: {
       title: product.pageTitle || product.name,
-      description: product.metaDescription || product.description,
+      description: product.metaDescription,
       url,
-      siteName: "Techify Nation",
+      siteName: "",
       images: [
         {
           url: product.image?.[0]?.path || "/default-product-image.svg",
@@ -87,7 +99,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: product.pageTitle || product.name,
-      description: product.metaDescription || product.description,
+      description: product.metaDescription,
       images: [product.image?.[0]?.path || "/default-product-image.svg"],
     },
     robots: {
@@ -105,63 +117,29 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Page component (server-side)
+//  Page component (server-side)
 export default async function ProductPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params; // <-- await here
   const headersList = await headers();
-  // ✅ Most reliable - Next.js sets this automatically
-  const fullUrl = headersList.get("x-full-url");
+  //  Most reliable - Next.js sets this automatically
   const pathname: any = headersList.get("x-pathname");
 
-  // 🔥 Parallel data fetching
+  //  Parallel data fetching
   const product = await fetchProductBySlugAndUrl(pathname);
   const webPages = await fetchWebPages(pathname);
 
   if (!product && !webPages) {
-    notFound(); // 🔥 THIS IS THE KEY
+    notFound();
   }
   const backendSchema = product?.schema;
 
   return (
     <>
-      {webPages ? <main className="flex flex-col gap-30" role="main">
-        <div className="w-full max-w-[1170px] mx-auto lg:px-6 xl:px-0">
-          <div className="py-2">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Content */}
-              <div className="lg:col-span-12">
-                <h2 className=""><Link href="/" className="text-[11px] "
-                  itemProp="name"
-                >
-                  Home
-                </Link> {" "} <span className="mt-2 mx-3 text-gray-400 text-[11px]" aria-hidden="true">/</span> {" "} <span
-                  className="!text-[#014ec3] text-[11px]"
-                  itemProp="name"
-                >
-                    {webPages?.pageName}
-                  </span></h2>
-
-                {/* Page Title */}
-                <h1 className="text-4xl mb-4 text-[#4A4A4A] mt-5">
-                  {webPages?.pageName}
-                </h1>
-
-                {/* Policy Content */}
-                <div
-                  className="text-[14px] leading-[20px] [&_ol]:space-y-6 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:text-[14px] [&_li]:leading-[20px] [&_strong]:font-bold [&_p]:mb-0"
-                  dangerouslySetInnerHTML={{ __html: webPages?.pageContent || "" }}
-                />
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </main> : <div>
-        {/* ✅ Structured Data (SEO safe) */}
+      {webPages ? <DynamicWebPage webPages={webPages} /> : <div>
+        {/* Structured Data (SEO safe) */}
         {backendSchema && (
           <Script
             id="product-jsonld"

@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
 import LayoutWrapper from "./components/layout/LayoutWrapper";
-import { Inter, Jost, Roboto, Roboto_Condensed } from "next/font/google";
-import localFont from "next/font/local";
+import { Roboto, Roboto_Condensed } from "next/font/google";
 import ScriptInjector from "@/components/ScriptInjector";
-import "../styles/blog/api-content.css";
+import DynamicFavicon from "@/components/DynamicFavicon";
 import "./globals.css";
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  preload: true,
-});
+import "../styles/blog/api-content.css";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -21,50 +15,20 @@ const roboto = Roboto({
   adjustFontFallback: false,
 
 });
+
 const robotoCondensed = Roboto_Condensed({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
+  weight: ["400", "700"],
+  display: "swap",        // ✅ FIX: swap add kiya
+  preload: true,          // ✅ FIX: preload add kiya
   variable: "--font-roboto-condensed",
 });
-// // ✅ Recoleta (400–700) - Loading multiple weights
-// const gilroy = localFont({
-//   src: [
-//     {
-//       // 🚨 Ensure file name matches exactly (with space)
-//       path: "./fonts/Gilroy-Regular.ttf",
-//       weight: "400", // Regular
-//       style: "normal",
-//     },
-//     {
-//       // 🚨 Ensure file name matches exactly (with space)
-//       path: "./fonts/Gilroy-Medium.ttf",
-//       weight: "500", // Medium
-//       style: "normal",
-//     },
-//     {
-//       // 🚨 Ensure file name matches exactly (with space)
-//       path: "./fonts/Gilroy-SemiBold.ttf",
-//       weight: "600", // SemiBold
-//       style: "normal",
-//     },
-//     {
-//       // 🚨 Ensure file name matches exactly (with space)
-//       path: "./fonts/Gilroy-Bold.ttf",
-//       weight: "700", // Bold
-//       style: "normal",
-//     },
-//   ],
-//   variable: "--font-recoleta",
-//   display: "swap",
-//   preload: true,
-// });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://techifynation-8g63.vercel.app"),
+  robots: { index: false, follow: false },
   title: {
-    // default: "Techify Nation",
-    // template: "%s | Techify Nation",
-    default: "Techify Nation ",
+    default: "Techify Nation",
     template: "%s | Techify Nation ",
   },
   description:
@@ -102,9 +66,9 @@ export const metadata: Metadata = {
     images: ["/serverblink-logo.png"], // Replace with actual logo path
   },
   icons: {
-    icon: "",
-    shortcut: "",
-    apple: "",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 export default function RootLayout({
@@ -113,10 +77,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${roboto.variable} `}>
-      <body className={`${roboto.className} antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${roboto.variable} ${robotoCondensed.variable}`}>
+      <body
+        className="antialiased"
+        style={{ fontFamily: "var(--font-roboto), sans-serif" }}
+        suppressHydrationWarning
+      >
         <LayoutWrapper>
           <ScriptInjector />
+          <DynamicFavicon />
           {children}
         </LayoutWrapper>
       </body>

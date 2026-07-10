@@ -71,6 +71,53 @@
   /* 2560px → ultra-wide */
 }
 
+/* my fonts */
+/* .roboto-font {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
+}
+.roboto-condensed-font {
+  font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif !important;
+}
+.roboto-only-font {
+  font-family: 'Roboto' !important;
+}
+.roboto-condensed-only-font {
+  font-family: 'Roboto Condensed' !important;
+}
+
+.sans-font {
+  font-family: 'Roboto', sans-serif !important;
+}
+.roboto-sans-font {
+  font-family: 'Roboto', sans-serif !important;
+} */
+
+
+.roboto-font {
+  font-family: var(--font-roboto), Arial, Helvetica, sans-serif !important;
+}
+
+.roboto-condensed-font {
+  font-family: var(--font-roboto-condensed), Arial, Helvetica, sans-serif !important;
+}
+
+.roboto-only-font {
+  font-family: var(--font-roboto) !important;
+}
+
+.roboto-condensed-only-font {
+  font-family: var(--font-roboto-condensed) !important;
+}
+
+.roboto-sans-font {
+  font-family: var(--font-roboto), sans-serif !important;
+}
+
+
+
+
+
+/* my fonts */
 :root {
   --primary-color: #014ec3;
   --bg-color: #eaeaea;
@@ -125,7 +172,7 @@ body {
   background-color: #eaeaea;
   /* font-family: Roboto, Arial, Helvetica, sans-serif !important; */
 
-    font-family: "Roboto Condensed", "Roboto", Arial, Helvetica, sans-serif !important;
+  font-family: "Roboto Condensed", "Roboto", Arial, Helvetica, sans-serif !important;
   /* font-family: "Roboto", Arial, Helvetica, sans-serif; */
   /* font-family: var(--font-roboto-condensed), "Roboto", Arial, Helvetica, sans-serif; */
   /* font-family: "Recoleta", sans-serif; */
@@ -217,6 +264,18 @@ button {
   @apply bg-[white] text-[#014ec3] border-[#014ec3];
 }
 
+.font-roboto {
+  font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* font-family: "Roboto Condensed", Arial, Helvetica, sans-serif; */
 .btn-primary {
@@ -229,7 +288,7 @@ button {
   @apply bg-[#014ec3] text-white;
 
   /* Border styling - no left, right, top borders, bottom border with darker color */
-  @apply border-0 border-b-[4px] border-b-[#0244a7] rounded-none;
+  @apply border-0 border-b-[4px] border-b-[#014ec3] rounded-none;
 
   /* Spacing */
   @apply px-[2.28571rem] py-[0.85714rem] my-0;
@@ -245,11 +304,11 @@ button {
 }
 
 .btn-primary:hover {
-  @apply bg-[#014ec3] border-b-[#014ec3];
+  @apply bg-[#014ec3] border-b-[#6b0107];
 }
 
 .btn-primary:active {
-  @apply bg-[#014ec3] translate-y-[1px];
+  @apply bg-[#9e1414] translate-y-[1px];
 }
 
 .btn-primary:focus {
@@ -337,6 +396,14 @@ img {
   }
 }
 
+
+/* ✅ ReCAPTCHA challenge popup — always on top */
+body>div[style*="z-index: 2000000100"],
+body>div[style*="z-index: 2000000000"],
+body>div[style*="z-index: 2000000099"] {
+  z-index: 99999999 !important;
+}
+
 /* Only show scrollbar when scrolling */
 .custom-scroll {
   scrollbar-width: thin;
@@ -386,6 +453,91 @@ img {
   background: linear-gradient(180deg,
       rgba(229, 73, 73, 0.6) 0%,
       rgba(229, 73, 73, 0.8) 100%);
+}
+
+/* Faqs Design */
+.faqs-section {
+  width: 100%;
+}
+
+.faqs-section .accordion input {
+  display: none;
+}
+
+.faqs-section h2 {
+  border: none;
+  text-transform: none;
+  font-size: 24px;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #333;
+  font-weight: 300;
+}
+
+.faqs-section .accordion h3 label {
+  display: block;
+  padding: 12px;
+  background: #f1f1f1;
+  color: #000;
+  cursor: pointer;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+
+
+.faqs-section .accordion h3 label:hover {
+  background: #014ec3;
+  color: #fff;
+}
+
+.faqs-section .accordion input:checked+h3 label {
+  background: #014ec3;
+  color: #fff;
+}
+
+.faqs-section .accordion .content {
+  max-height: 0;
+  overflow: hidden;
+  background: #fff;
+  transition: max-height 0.3s ease;
+  padding: 0 12px;
+}
+
+.faqs-section .accordion input:checked+h3+.content {
+  max-height: 200px;
+  padding: 10px 12px;
+}
+
+.faqs-section .accordion h3 {
+  font-weight: 700;
+  line-height: inherit;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* Testimonials PrimeReact carousel – prevent black gaps & side clipping */
+.testimonials-carousel .p-carousel,
+.testimonials-carousel .p-carousel-content,
+.testimonials-carousel .p-carousel-container,
+.testimonials-carousel .p-carousel-items-content,
+.testimonials-carousel .p-carousel-item {
+  background: transparent !important;
+}
+
+.testimonials-carousel .p-carousel-content {
+  overflow: hidden;
+}
+
+.testimonials-carousel .p-carousel-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 0;
 }
 
 /* Tailwind Breakpoints reference:

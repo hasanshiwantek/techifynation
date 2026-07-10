@@ -36,6 +36,7 @@ const GlobalSupplier = () => {
               width={500}
               height={600}
               className="w-full h-full object-cover"
+              priority
             />
           </div>
 
@@ -48,6 +49,7 @@ const GlobalSupplier = () => {
                 width={800}
                 height={400}
                 className="w-full h-auto object-cover "
+               priority
               />
             </div>
 

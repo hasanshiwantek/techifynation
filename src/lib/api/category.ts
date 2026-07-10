@@ -9,7 +9,7 @@ export const fetchCategories = async () => {
       storeId: storeId,
     },
     // ✅ ISR: cache once, refresh every 5 min
-    next: { revalidate: 60 },
+    next: { revalidate: 5 },
   });
 
   if (!res.ok) throw new Error("Failed to fetch categories");
@@ -30,7 +30,7 @@ export async function fetchCategoryById(id: number | string) {
     if (res.status === 404) return null;
 
     if (!res.ok) {
-      console.error(`Category API error: ${res.status} for id ${id}`);
+     
       return null;
     }
 
@@ -38,7 +38,7 @@ export async function fetchCategoryById(id: number | string) {
     return data || null;
 
   } catch (err) {
-    console.error(`fetchCategoryById failed for id ${id}:`, err);
+    
     return null;
   }
 }

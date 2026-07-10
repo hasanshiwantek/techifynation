@@ -6,12 +6,14 @@ import { RootState } from "@/redux/store";
 import { fetchAccountOrders } from "@/redux/slices/myaccountSlice";
 import Link from "next/link";
 import ReturnItemsModal from "./ReturnItemsModal"; // Import modal
+import { cartTransfer } from "@/redux/slices/cartsSlice";
 
 const OrderProduct = () => {
   const dispatch = useAppDispatch();
   const { order, loading, error } = useAppSelector(
     (state: RootState) => state.myaccount
   );
+  const auth = useAppSelector((state: RootState) => state?.auth);
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +60,7 @@ const OrderProduct = () => {
 
   if (error)
     return (
-      <p className="text-red-500">Failed to fetch orders. {error}</p>
+      <p className="text-[#014ec3]">Failed to fetch orders. {error}</p>
     );
 
   if (!order?.orders || order.orders.length === 0)
@@ -85,12 +87,12 @@ const OrderProduct = () => {
               <div className="w-full max-w-[128px] h-32 relative flex-shrink-0">
                 <Image
                   src={
-                    item?.products?.[0]?.images?.[0] || item?.products?.[1]?.images?.[0] ||
+                    item?.products?.[0]?.image?.[0]?.path || item?.products?.[1]?.image?.[0]?.path ||
                     "/default-product-image.svg"
                   }
                   alt={item?.products?.[0]?.name || item?.products?.[1]?.name || "Product Image"}
                   fill
-                  className="object-contain border rounded-md"
+                  className="object-contain border rounded-md"fetchPriority="high"
                 />
               </div>
 

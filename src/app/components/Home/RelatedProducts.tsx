@@ -25,7 +25,7 @@ const RelatedProduct = ({ products }: { products: RelatedProductItem[] }) => {
   const [direction, setDirection] = useState(0); // 👈 direction detect
   const itemsPerPage = 4;
   const dispatch = useAppDispatch();
-  const cart = useAppSelector((state: RootState) => state.cart.items);
+  const cart = useAppSelector((state: RootState) => state.carts?.items);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<RelatedProductItem | null>(null);
 
@@ -42,7 +42,7 @@ const RelatedProduct = ({ products }: { products: RelatedProductItem[] }) => {
   };
 
   const visibleProducts = products.slice(startIndex, startIndex + itemsPerPage);
-  console.log("Related Products: ", products);
+ 
 
   return (
     <>
@@ -89,6 +89,7 @@ const RelatedProduct = ({ products }: { products: RelatedProductItem[] }) => {
                     loading="lazy"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     quality={80}
+                    fetchPriority="high"
                   />
                 </div>
 
