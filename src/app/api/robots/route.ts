@@ -15,22 +15,21 @@ export async function GET() {
     // Extract robotsTxt from the response
     const robotsTxt = res.data?.data?.[0]?.website?.robotsTxt;
 
- if (robotsTxt) {
-  const sitemapUrl = `${process.env.SITE_URL || "https://techifynation-8g63.vercel.app"}/sitemap.xml`;
-  const robotsWithSitemap = `${robotsTxt}\n\nSitemap: ${sitemapUrl}`;
-  
-  return new Response(robotsWithSitemap, {
-    status: 200,
-    headers: { 
-      "Content-Type": "text/plain",
-      "Cache-Control": "public, max-age=3600", // 1 hour cache
-    },
-  });
+    if (robotsTxt) {
+      const sitemapUrl = `${process.env.SITE_URL || "https://techifynation-8g63.vercel.app"}/sitemap.xml`;
+      const robotsWithSitemap = `${robotsTxt}`;
+
+      return new Response(robotsWithSitemap, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain",
+          "Cache-Control": "public, max-age=100",
+        },
+      });
     } else {
       // Fallback if robotsTxt not found in response
-      const fallback = `User-agent: *\nAllow: /\nSitemap: ${
-        process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
-      }/sitemap.xml\n`;
+      const fallback = `User-agent: *\nAllow: /\nSitemap: ${process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
+        }/sitemap.xml\n`;
 
       return new Response(fallback, {
         status: 200,
@@ -39,12 +38,11 @@ export async function GET() {
     }
 
   } catch (err: any) {
-    console.error("Error:", err.response?.data || err.message);
+  
 
     // Fallback on error
-    const fallback = `User-agent: *\nAllow: /\nSitemap: ${
-      process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
-    }/sitemap.xml\n`;
+    const fallback = `User-agent: *\nAllow: /\nSitemap: ${process.env.SITE_URL || "https://techifynation-8g63.vercel.app"
+      }/sitemap.xml\n`;
 
     return new Response(fallback, {
       status: 200,

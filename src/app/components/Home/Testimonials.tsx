@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { IoStarSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { fetchReviews, fetchStats } from "@/redux/slices/homeSlice";
+
 export interface Review {
   id: number;
   brand: string;
@@ -16,10 +17,10 @@ export interface Review {
   reviewHeading: string;
   reviewContent: string;
   dateOfExperience: string;
-  stars: string; // URL string
+  stars: string;
   url: string;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
+  created_at: string;
+  updated_at: string;
   deleted_at: string | null;
 }
 
@@ -35,34 +36,36 @@ export interface Stats {
   deleted_at: string | null;
 }
 
-// Dynamically import Carousel to reduce bundle size
+// Dynamically import Carousel
 const Carousel = dynamic(
   () => import("primereact/carousel").then((mod) => mod.Carousel),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
+
 const SWIPE_THRESHOLD_PX = 45;
+const REVIEW_CARD_WIDTH = 380;
+
 
 const Testimonials = () => {
   const dispatch = useAppDispatch();
   const { reviews, reviewsLoading, reviewsError, stats } = useAppSelector(
     (state) => state.home
   );
-  const [visibleItems, setVisibleItems] = useState(3); // dynamically set numVisible
+
+  const [visibleItems, setVisibleItems] = useState(1);
   const carouselWrapRef = useRef<HTMLDivElement>(null);
+
+  // Drag handling refs
   const dragStartX = useRef(0);
   const dragActive = useRef(false);
+  const isDragging = useRef(false);
 
-  const responsiveOptions = useMemo(
-    () => [
-      { breakpoint: 1400, numVisible: 2 },
-      { breakpoint: 1199, numVisible: 2 },
-      { breakpoint: 767, numVisible: 2 },
-      { breakpoint: 575, numVisible: 1 },
-    ],
-    []
-  );
+  const updateVisibleItems = useCallback(() => {
+    const containerWidth =
+      carouselWrapRef.current?.offsetWidth ?? window.innerWidth;
+    const count = Math.max(1, Math.floor(containerWidth / REVIEW_CARD_WIDTH));
+    setVisibleItems(count);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchReviews());
@@ -70,130 +73,148 @@ const Testimonials = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      const resp = responsiveOptions.find((r) => width <= r.breakpoint);
-      setVisibleItems(resp ? resp.numVisible : 2);
-    };
+    updateVisibleItems();
+    window.addEventListener("resize", updateVisibleItems);
+    return () => window.removeEventListener("resize", updateVisibleItems);
+  }, [updateVisibleItems]);
 
-    handleResize(); // initial check
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, [responsiveOptions]);
+  useEffect(() => {
+    if (!reviewsLoading && reviews.length > 0) {
+      updateVisibleItems();
+    }
+  }, [reviewsLoading, reviews.length, updateVisibleItems]);
 
   const clickCarouselNav = useCallback((direction: "next" | "prev") => {
     const root = carouselWrapRef.current;
     if (!root) return;
     const sel =
-      direction === "next" ? "button.p-carousel-next" : "button.p-carousel-prev";
+      direction === "next"
+        ? "button.p-carousel-next"
+        : "button.p-carousel-prev";
     const btn = root.querySelector<HTMLButtonElement>(sel);
     if (btn && !btn.disabled) btn.click();
   }, []);
 
-  const handleCarouselPointerDown = useCallback(
-    (e: React.PointerEvent) => {
-      if (e.pointerType === "touch") return;
-      dragActive.current = true;
-      dragStartX.current = e.clientX;
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    },
-    []
-  );
+  // ==================== DRAG HANDLERS ====================
+  const handleCarouselPointerDown = useCallback((e: React.PointerEvent) => {
+    dragActive.current = true;
+    isDragging.current = false;
+    dragStartX.current = e.clientX;
+
+    const target = e.currentTarget as HTMLElement;
+    target.setPointerCapture(e.pointerId);
+  }, []);
+
+  const handleCarouselPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!dragActive.current) return;
+
+    const diff = Math.abs(e.clientX - dragStartX.current);
+    if (diff > 10) {
+      isDragging.current = true;
+    }
+  }, []);
 
   const handleCarouselPointerUp = useCallback(
     (e: React.PointerEvent) => {
-      if (e.pointerType === "touch") return;
       if (!dragActive.current) return;
+
       dragActive.current = false;
+      const target = e.currentTarget as HTMLElement;
+
       try {
-        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-      } catch {
-        /* ignore */
-      }
+        target.releasePointerCapture(e.pointerId);
+      } catch { }
+
       const diff = e.clientX - dragStartX.current;
-      if (Math.abs(diff) < SWIPE_THRESHOLD_PX) return;
-      if (diff < 0) {
-        clickCarouselNav("next");
-      } else {
-        clickCarouselNav("prev");
+
+      // Only navigate if it was a meaningful drag
+      if (isDragging.current && Math.abs(diff) > SWIPE_THRESHOLD_PX) {
+        if (diff < 0) {
+          clickCarouselNav("next");
+        } else {
+          clickCarouselNav("prev");
+        }
       }
+
+      isDragging.current = false;
     },
     [clickCarouselNav]
   );
 
   const reviewTemplate = (review: Review) => (
-    <div className="text-left p-4 flex flex-col gap-3 w-full md:w-[250px] lg:w-[280px] xl:w-[330px] h-[218px]">
-      {/* <FaQuoteLeft size={24} color="#00b67a" className="mb-2" /> */}
-      <div className="mb-3 flex items-center justify-between">
+    <div className="text-left p-4 flex flex-col gap-3 w-full max-w-[380px] h-[218px] box-border mx-auto">
+      <div className="mb-2 flex items-center justify-between gap-2">
         <Image
           src={review?.stars || "/default-product-image.svg"}
           alt="Rating"
           width={80}
           height={32}
-          className="h-8 w-36"
+          className="h-8 w-36 shrink-0"
+          loading="lazy"
           unoptimized
         />
-        <p className="mb-1 font-[500]">{review.dateOfExperience}</p>
+        <p className="mb-0 text-sm font-medium shrink-0">{review.dateOfExperience}</p>
       </div>
-      <Link href={review?.url} target="_blank">
-        <h2 className="text-xl text-black font-bold hover:text-blue-600">
-          <span className="inline-block border-b border-black overflow-hidden whitespace-nowrap text-ellipsis max-w-72">
+      <Link href={review?.url} target="_blank" className="block min-w-0">
+        <h2 className="text-[14px] text-[#333333] font-bold ">
+          <span className="inline-block w-full max-w-[348px] border-b border-black overflow-hidden whitespace-nowrap text-ellipsis">
             {review?.reviewHeading}
           </span>
         </h2>
       </Link>
 
-
       <div
-        className="text-xl overflow-auto review-scroll"
+        className="text-[14px] text-[#333333] leading-snug overflow-auto review-scroll min-w-0"
         style={{
-          maxHeight: "3.5em", // Approx 5 lines at 1.5em each
-          minHeight: "3.5em",
+          maxHeight: "4.5em",
+          minHeight: "4.5em",
         }}
       >
         {review?.reviewContent ? review?.reviewContent : "No review content"}
       </div>
-      <p className="text-black">
+      <p className="text-[#333333] text-[14px] truncate roboto-font" >
         <span className="font-bold">Date of Experience:</span> {review.dateOfExperience}
       </p>
 
-      <p className="mb-2">{review.reviewer}</p>
+      <p className="mb-0 text-[13px] text-[#00000099] truncate">{review.reviewer}</p>
     </div>
   );
+
 
   return (
     <div>
       {/* Header */}
       <header className="text-left mb-4 bg-[#393939] border-b border-gray-400">
-        <h2 className="font-bold text-xl text-white p-3 flex-1">
-          REVIEWS
-        </h2>
-
+        <h2 className="font-bold text-xl text-white p-3 flex-1">REVIEWS</h2>
       </header>
 
-      <div className="flex items-center justify-between md:flex-col sm:flex-col lg:flex-row flex-col">
+      <div className="flex items-center justify-between md:flex-col sm:flex-col lg:flex-row flex-col lg:py-10">
         {/* Left Summary Box */}
         <div className="flex flex-col items-center justify-between gap-5 whitespace-nowrap">
           <h3 className="text-center h3-regular">
             {stats?.status || "Excellent"}
           </h3>
-          <Image
-            src={
-              stats?.image ||
-              "https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-4.5.svg"
-            }
-            alt="Reviews"
-            width={200}
-            height={200}
-            className="max-w-44"
-          />
+          {/* Reserve exact space with correct star aspect ratio (~512:96) */}
+          <div className="w-44 aspect-[512/96]">
+            <Image
+              src="https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-4.5.svg"
+              alt="Reviews"
+              width={512}
+              height={96}
+              className="w-full h-full object-contain"
+              fetchPriority="high"
+              unoptimized
+            />
+          </div>
           <span className="flex items-center justify-center gap-1 text-center">
             Based on
-            <a href="#" className="border-b-2 text-black border-black">
-              {stats?.count || "18"} {' '}
-              reviews
-            </a>
+            <Link
+              href="https://www.trustpilot.com/review/serverblink.com"
+              target="_blank"
+              className="border-b-2 text-black border-black"
+            >
+              {stats?.count || "0"} reviews
+            </Link>
           </span>
           <div className="flex items-center justify-center">
             <IoStarSharp size={20} color="#00b67a" />
@@ -202,13 +223,13 @@ const Testimonials = () => {
         </div>
 
         {/* Carousel */}
-        <div className="w-full lg:w-[81%] relative">
+        <div className="w-full lg:flex-1 min-w-0 relative">
           {reviewsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 animate-pulse">
+            <div className="flex gap-4 py-4 overflow-hidden animate-pulse">
               {Array.from({ length: visibleItems }).map((_, index) => (
                 <div
                   key={index}
-                  className="rounded-md border bg-white p-6 space-y-4"
+                  className="w-[380px] max-w-[380px] shrink-0 rounded-md border bg-white p-6 space-y-4 h-[218px]"
                 >
                   <div className="h-6 w-16 rounded bg-gray-200" />
                   <div className="h-4 w-32 rounded bg-gray-200" />
@@ -219,7 +240,9 @@ const Testimonials = () => {
             </div>
           ) : reviewsError ? (
             <div className="flex flex-col items-center justify-center gap-4 bg-white border rounded-md p-8 text-center w-full max-w-full overflow-hidden">
-              <p className="h5-regular text-[#014ec3] break-words w-full">{reviewsError}</p>
+              <p className="h5-regular text-[#014ec3] break-words w-full">
+                {reviewsError}
+              </p>
               <button
                 onClick={() => dispatch(fetchReviews())}
                 className="btn-outline-primary !px-6 !py-3 !text-base"
@@ -237,8 +260,9 @@ const Testimonials = () => {
           ) : (
             <div
               ref={carouselWrapRef}
-              className="cursor-grab touch-pan-y select-none active:cursor-grabbing [&_button.p-carousel-prev]:sr-only [&_button.p-carousel-next]:sr-only"
+              className="testimonials-carousel w-full cursor-grab touch-pan-y select-none active:cursor-grabbing [&_button.p-carousel-prev]:sr-only [&_button.p-carousel-next]:sr-only"
               onPointerDown={handleCarouselPointerDown}
+              onPointerMove={handleCarouselPointerMove}
               onPointerUp={handleCarouselPointerUp}
               onPointerCancel={handleCarouselPointerUp}
             >
@@ -246,16 +270,16 @@ const Testimonials = () => {
                 value={reviews}
                 numVisible={visibleItems}
                 numScroll={1}
-                responsiveOptions={responsiveOptions.map((r) => ({
-                  breakpoint: r.breakpoint + "px",
-                  numVisible: r.numVisible,
-                  numScroll: 1,
-                }))}
                 circular
                 autoplayInterval={4000}
                 itemTemplate={reviewTemplate}
                 showIndicators={false}
                 showNavigators={true}
+                pt={{
+                  root: { className: "w-full" },
+                  content: { className: "overflow-hidden" },
+                  item: { className: "box-border" },
+                }}
               />
             </div>
           )}

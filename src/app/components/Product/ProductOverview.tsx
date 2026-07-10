@@ -7,11 +7,11 @@ const ProductOverview = ({ product }: { product: any }) => {
 
   return (
     <section className={"py-10   xl:px-0 2xl:px-0 w-[100%] lg:w-full max-w-[1170px] mx-autu px-0 " + (product.relatedProductsEnabled ? "border-b-2 border-[#545454]" : "")} aria-labelledby="product-overview-heading">
-      <div className="w-full  flex flex-col">
+      <div className="w-full  flex flex-col roboto-condensed-only-font" >
         <div className="flex flex-col">
           {/* Main Overview Heading */}
-          <div className="flex justify-center sm:justify-start  ">
-            <h2 className="text-[13px]  bg-[#F2F2F2] p-2 sm:w-48 w-full text-center text-black font-bold">Overview</h2>
+          <div className="flex justify-center sm:justify-start roboto-condensed-only-font  " >
+            <h2 className="text-[13px]  bg-[#F2F2F2] p-2 sm:w-48 w-full text-center text-[#545454] font-bold">Overview</h2>
           </div>
           <h3 className="text-[20px] bg-[#F2F2F2] px-5 text-[#545454] py-2 font-bold">PRODUCT DESCRIPTION</h3>
           <div className="w-[97%] mx-auto h-[1px] bg-[#545454]"></div>
@@ -29,34 +29,7 @@ const ProductOverview = ({ product }: { product: any }) => {
           </p> */}
 
           {/* Key Features */}
-          {/* <section className="" aria-labelledby="key-features-heading">
-            <h3 className="h5-regular !mb-2">Key Features:</h3>
-            <ul className="!list-disc !list-inside !space-y-3">
-              <li className="h5-regular">
-                <span className="">SKU:</span> {product?.sku || "N/A"}
-              </li>
-              <li className="h5-regular">
-                <span className="">MPN:</span> {product?.mpn || "N/A"}
-              </li>
-              <li className="h5-regular">
-                <span className="">Brand:</span> {product?.brand?.name || "N/A"}
-              </li>
-              <li className="h5-regular">
-                <span className="">Category:</span>{" "}
-                {product?.categories?.[0]?.name || "N/A"}
-              </li>
-              <li className="h5-regular">
-                <span className="">Availability:</span>{" "}
-                {product?.availabilityText || "N/A"}
-              </li>
-              <li className="h5-regular">
-                <span className="">Weight:</span>{" "}
-                {product?.dimensions?.weight
-                  ? `${product.dimensions.weight} lbs`
-                  : "N/A"}
-              </li>
-            </ul>
-          </section> */}
+      
 
           {/* Closing Paragraph */}
           {/* <p
@@ -72,10 +45,11 @@ const ProductOverview = ({ product }: { product: any }) => {
 
         {/* Product Details Section */}
         <section className="border" aria-labelledby="product-details-heading">
-          {/* <div className="p-4">
-          </div> */}
-          <h2 className="!p-4 bg-[#F2F2F2]">{product?.metaDescription || "N/A"}</h2>
-          {product?.customFields.length > 0 && <>
+          <div
+            className="!p-4 bg-[#F2F2F2] text-[14px] text-[#545454] prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: product?.description || "No description available for this product." }}
+          />
+          {product?.customFields?.length > 0 && <>
             <h3 className="text-[20px] bg-[#F2F2F2] px-5 text-[#545454] py-2 font-bold">PRODUCT DETAILS</h3>
             <div className="w-[97%] mx-auto h-[1px] bg-[#545454]"></div>
 

@@ -59,7 +59,7 @@ const SingleBlogContainer = ({ singleBlog }: SingleBlogContainerProps) => {
       >
         {/* Breadcrumb Navigation with Schema markup */}
         <nav 
-          className="flex items-center mb-6"
+          className=" hidden md:flex items-center mb-6"
           aria-label="Breadcrumb"
           itemScope
           itemType="https://schema.org/BreadcrumbList"
@@ -136,7 +136,7 @@ const SingleBlogContainer = ({ singleBlog }: SingleBlogContainerProps) => {
               <BlogSkeleton />
             ) : error ? (
               <div 
-                className="w-full py-10 text-center text-red-500 font-medium"
+                className="w-full py-10 text-center text-[#014ec3] font-medium"
                 role="alert"
                 aria-live="polite"
               >

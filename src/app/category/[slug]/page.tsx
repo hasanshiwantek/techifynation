@@ -2,7 +2,7 @@
 import ProductsPage from "@/app/products/page";
 import { fetchCategories, fetchCategoryById } from "@/lib/api/category";
 import { Metadata } from "next";
-
+import NotFound from "@/app/not-found";
 interface Props {
   params: Promise<{ slug: string }>; // 👈 same as ProductPage
 }
@@ -28,10 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     category?.seo?.page_title || slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
   const title = `${formattedCategory} `;
-  const description = `Browse our collection of ${formattedCategory}. Genuine components, affordable prices, and fast shipping.`;
+  const description = category?.seo?.meta_description;
 
   return {
-    title,
+    title: {
+      absolute: formattedCategory,  // ← changed
+    },
     description,
     alternates: {
       canonical: `https://techifynation-8g63.vercel.app/category/${slug}`,
@@ -75,14 +77,15 @@ export default async function CategoryPage({ params }: Props) {
   const category = findCategoryBySlug(categories, slug);
 
   if (!category) {
-    return <div className="text-center py-10">❌ Category not found</div>;
+    return <NotFound />;
+    // return <div className="text-center py-10">❌ Category not found</div>;
   }
   const formattedCategorydescription = await fetchCategoryById(category.id);
   return (
     <ProductsPage
       initialCategoryId={category.id}
       initialCategoryName={category.name}
-      initialCategorydescription={formattedCategorydescription?.category}
+      initialCategorydescription={category?.description}
     />
   );
 }

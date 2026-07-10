@@ -17,7 +17,7 @@ const ReturnOrder = () => {
         setLoading(true);
         setError(null);
         const res = await axiosInstance.get("dashboard/orders/get-return-order");
-        console.log("API Response:", res?.data?.data);
+        
         
         if (res?.data?.data && res.data.data.length > 0) {
           setOrders(res.data.data);
@@ -26,7 +26,7 @@ const ReturnOrder = () => {
         }
       } catch (err) {
         setError("Failed to load return orders");
-        console.error(err);
+       
       } finally {
         setLoading(false);
       }
@@ -67,7 +67,7 @@ const ReturnOrder = () => {
           <p className="text-[#014ec3] text-lg font-medium">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-6 py-2 bg-[#014ec3] text-white rounded hover:bg-[#014ec3] transition"
+            className="mt-4 px-6 py-2 bg-[#014ec3] text-white rounded hover:bg-red-700 transition"
           >
             Retry
           </button>
@@ -107,7 +107,7 @@ const ReturnOrder = () => {
                 }
                 alt={order?.product?.[0]?.name || "Product Image"}
                 fill
-                className="object-contain border rounded-md"
+                className="object-contain border rounded-md"fetchPriority="high"
               />
             </div>
 

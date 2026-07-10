@@ -21,7 +21,6 @@ const BlogsList = () => {
         <>
             <div className="flex items-center justify-between mb-4 bg-[#393939] border-b border-gray-400">
                 <h2 className="font-bold text-xl text-white p-3 flex-1">{"Our blog posts".toUpperCase()}</h2>
-            
             </div>
             <main className="flex flex-col gap-30" role="blog">
                 <div className="w-full max-w-[1170px] mx-auto px-6 xl:px-0">

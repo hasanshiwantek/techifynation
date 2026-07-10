@@ -1,49 +1,62 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { Plus, Minus, ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
+import dynamic from "next/dynamic";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import Link from "next/link";
 import { toast } from "sonner";
-import { addToCart } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import ProductPrice from "../productprice/ProductPrice";
 import { fetchReviews, fetchStats } from "@/redux/slices/homeSlice";
-import Link from "next/link";
 import { RootState } from "@/redux/store";
+import { addCart, fetchCartList } from "@/redux/slices/cartsSlice";
 import BulkInquiryModal from "../modal/BulkInquiryModal";
 import AddReviewModal from "../modal/AddReviewModal";
 
-const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
+
+
+
+const ProductMiddle = ({ product, quantity, increment, decrement, setQuantity }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const cart = useAppSelector((state: RootState) => state.cart.items);
-  const { reviews, reviewsLoading, reviewsError, stats } = useAppSelector(
-    (state) => state.home
-  );
-  const availableForSale = product?.purchasabilityStatus == "available"
 
-  const handleSeeMore = useCallback(() => {
-    window.open(
-      "https://www.trustpilot.com/review/newtownspares.com",
-      "_blank"
-    );
-  }, []);
+  const minQty = product?.minPurchaseQuantity || 1;
+  const maxQty = product?.maxPurchaseQuantity;
+
+  const cart = useAppSelector((state: RootState) => state.carts?.items);
+  const availableForSale = product?.purchasabilityStatus == "available" && Number(product?.price) > 0;
 
   useEffect(() => {
     dispatch(fetchReviews());
     dispatch(fetchStats());
-  }, [dispatch]);
+  }, []);
+
+  const openBulkModal = useCallback(() => setIsModalOpen(true), []);
+  const closeBulkModal = useCallback(() => setIsModalOpen(false), []);
+  const openReviewModal = useCallback(() => setIsReviewModalOpen(true), []);
+  const closeReviewModal = useCallback(() => setIsReviewModalOpen(false), []);
 
 
+  const bulkProduct = product ? {
+    name: product.name,
+    image: product.image?.[1]?.path || product.image?.[0]?.path || "/default-product-image.svg",
+    sku: product.sku ?? "",
+  } : undefined;
 
+  const reviewProduct = product ? {
+    name: product.name ?? "",
+    image: product?.image?.[0]?.path || "/default-product-image.svg",
+    sku: product.sku ?? "",
+    id: product.id,
+  } : undefined;
   return (
     <>
       <section className="product-middle flex flex-col h-full w-full max-w-full  xl:max-w-[50%] 2xl:max-w-[50%] ">
         {/* Title Section */}
         <div className="flex flex-col gap-2 mb-4">
-          <h1 className="font-bold text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] xl:text-[20px] 2xl:text-[20px] leading-tight text-[#545454] border-b-1 border-[#8b8b8b] pb-3">
+          <h1 className="font-bold text-[18px] sm:text-[18px] md:text-[18px] lg:text-[20px] xl:text-[20px] 2xl:text-[20px] leading-tight text-[#545454] border-b-1 border-[#8b8b8b] pb-3 roboto-condensed-only-font" >
             {product?.name || "N/A"}
           </h1>
 
@@ -59,9 +72,12 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
         {!availableForSale ? <div>
           <div className="flex flex-col">
             <h2 className="text-[#545454] flex items-center font-bold !text-[22px]" style={{ color: "#545454" }}>
-              Call for pricing: <Link href="tel:+15022063033" className="text-[#014ec3] underline">
-                {/* (502) 206-3033 */}
-              </Link>
+              Call for pricing:
+              {/* <Link
+                href="tel:+15022063033"
+                className="text-[#014ec3] underline">
+                (502) 206-3033
+              </Link> */}
             </h2>
           </div>
         </div> : <div>
@@ -69,14 +85,14 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
             {product?.msrp && Number(product?.msrp) > 0 ? (
               <>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[16px] text-[#7b7b7b] font-normal">
+                  <span className="text-[16px] text-[#7B7B7B] font-normal">
                     Price
                   </span>
                   <span>
                     <ProductPrice
                       price={Number(product?.msrp)}
                       inline={true}
-                      className="!text-[16px] text-[#7b7b7b] font-normal !line-through"
+                      className="!text-[16px] text-[#7B7B7B] font-normal !line-through"
                     />
                   </span>
                 </div>
@@ -126,19 +142,48 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
             </span>
 
             {/* Quantity Selector */}
-            <div className="flex items-center border border-[#ddd] rounded">
+            <div className="flex items-center border border-[#ddd] rounded" role="group" aria-label="Quantity selector">
               <button
                 aria-label="Decrease quantity"
                 onClick={decrement}
                 className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-[#f5f5f5] transition text-[#4a4a4a] bg-[#cac9c9]  border-b-3 border-[#8b8b8b]"
               >
-                <ChevronDown width={15} height={15} />
+                <ChevronDown width={15} height={15} aria-hidden="true" />
               </button>
 
               <input
+                id="product-quantity"           // ✅ label se match
                 type="text"
                 value={quantity}
-                readOnly
+                aria-label="Product quantity"
+                aria-live="polite"
+                // readOnly
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // Empty allow karo typing ke liye
+                  if (val === "") {
+                    setQuantity("");
+                    return;
+                  }
+                  const num = Number(val);
+                  // Sirf valid number allow karo
+                  if (!isNaN(num) && num > 0) {
+                    // Max se zyada mat jane do
+                    if (maxQty && num > maxQty) return;
+                    setQuantity(num);
+                  }
+                }}
+                onBlur={() => {
+                  const num = Number(quantity);
+                  // Blur pe range enforce karo
+                  if (!num || num < minQty) {
+                    setQuantity(minQty);
+                    toast.error(`Minimum quantity is ${minQty}`);
+                  } else if (maxQty && num > maxQty) {
+                    setQuantity(maxQty);
+                    toast.error(`Maximum quantity is ${maxQty}`);
+                  }
+                }}
                 className="w-12 sm:w-14 h-9 sm:h-8 text-center border-x border-[#ddd] text-[15px] sm:text-[16px] font-semibold text-[#545454] outline-none bg-white"
               />
 
@@ -147,7 +192,7 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
                 onClick={increment}
                 className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-[#f5f5f5] transition text-[#4a4a4a] bg-[#cac9c9] border-b-3 border-[#8b8b8b]"
               >
-                <ChevronUp width={15} height={15} />
+                <ChevronUp width={15} height={15} aria-hidden="true" />
               </button>
             </div>
           </div>}
@@ -172,11 +217,19 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
               }
 
               const quantityToAdd = Math.min(quantity, remainingQty);
-              dispatch(addToCart({ ...product, quantity: quantityToAdd }));
-              toast.success(
-                `${product.name} added to cart (${quantityToAdd})!`
-              );
-              router.push("/cart")
+              dispatch(addCart({
+                data: {
+                  productId: product?.id,
+                  quantity: quantityToAdd
+                }
+              })).unwrap().then(() => {
+                dispatch(fetchCartList());
+                toast.success(
+                  `${product.name} added to cart (${quantityToAdd})!`
+                );
+                router.push("/cart")
+              })
+
             }}
             className="btn-primary !w-full sm:!w-[51.7%] !py-3.5"
           >
@@ -187,7 +240,7 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
           <p className="text-[15px] sm:text-[18px] text-[#545454] mt-3 font-normal">
             Looking for a large quantity?{" "}
             <span
-              className="text-[var(--primary-color)] hover:underline font-normal cursor-pointer"
+              className="text-[#014ec3] hover:underline font-normal cursor-pointer"
               onClick={() => setIsModalOpen(true)}
             >
               Request A Bulk Quote
@@ -255,35 +308,21 @@ const ProductMiddle = ({ product, quantity, increment, decrement }: any) => {
         </div>
       </section>
       {/* Bulk Inquiry Modal */}
-      <BulkInquiryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        product={
-          product
-            ? {
-              name: product.name,
-              image: product.image?.[1]?.path ||
-                product.image?.[0]?.path ||
-                "/default-product-image.svg",
-              sku: product.sku ?? "",
-            }
-            : undefined
-        }
-      />
-      {isReviewModalOpen && <AddReviewModal
-        isOpen={isReviewModalOpen}
-        onClose={() => setIsReviewModalOpen(false)}
-        product={
-          product
-            ? {
-              name: product.name ?? "",
-              image: product?.image?.[0]?.path || "/default-product-image.svg",
-              sku: product.sku ?? "",
-              id: product.id,
-            }
-            : undefined
-        }
-      />}
+      {isModalOpen && (
+        <BulkInquiryModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          product={bulkProduct}
+        />
+      )}
+      {/* Review Modal */}
+      {isReviewModalOpen && (
+        <AddReviewModal
+          isOpen={isReviewModalOpen}
+          onClose={() => setIsReviewModalOpen(false)}
+          product={reviewProduct}
+        />
+      )}
     </>
   );
 };

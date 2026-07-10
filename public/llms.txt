@@ -1,0 +1,38 @@
+# Techify Nation: IT Hardware, Servers, Networking & Enterprise Solutions
+
+> Buy servers, networking equipment, storage devices, computer parts, and enterprise IT hardware. Browse products, brands, categories, and technical resources.
+
+Generated for AI assistants and large language models.
+
+## Pages
+
+- [Home](https://techifynation-8g63.vercel.app/)
+- [About Us](https://techifynation-8g63.vercel.app/about-us)
+- [Products](https://techifynation-8g63.vercel.app/products)
+- [Categories](https://techifynation-8g63.vercel.app/category)
+- [Brands](https://techifynation-8g63.vercel.app/brands)
+- [Advanced Search](https://techifynation-8g63.vercel.app/advanced-search)
+- [Contact Us](https://techifynation-8g63.vercel.app/contact-us)
+- [Blogs](https://techifynation-8g63.vercel.app/blogs)
+- [Terms & Conditions](https://techifynation-8g63.vercel.app/terms-conditions)
+- [Privacy Policy](https://techifynation-8g63.vercel.app/privacy-Policy)
+- [Shipping Policy](https://techifynation-8g63.vercel.app/shipping-policy)
+- [Return Policy](https://techifynation-8g63.vercel.app/return-Policy)
+
+## Product Categories
+
+- Servers
+- Networking Equipment
+- Storage Solutions
+- Computer Parts
+- Accessories
+- Enterprise Hardware
+
+## Resources
+
+- [Sitemap](https://techifynation-8g63.vercel.app/sitemap.xml)
+- [Robots](https://techifynation-8g63.vercel.app/robots.txt)
+
+## Purpose
+
+Techify Nation provides enterprise IT hardware, networking products, storage solutions, replacement parts, and accessories for businesses and IT professionals.

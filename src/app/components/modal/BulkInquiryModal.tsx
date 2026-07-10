@@ -1,21 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog";
+import ReCAPTCHA from "react-google-recaptcha";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/hooks/useReduxHooks";
 import { bulkInquiry } from "@/redux/slices/homeSlice";
 import { toast } from "react-toastify";
+import { sitekey } from "@/lib/axiosInstance";
 interface BulkInquiryModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -40,6 +39,9 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
   });
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -56,9 +58,17 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
       quantity: "",
       comments: "",
     })
+    setCaptchaToken(null);          // ✅ modal close/open pe reset
+    recaptchaRef.current?.reset();
   }, [isOpen])
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // ✅ Captcha check
+    if (!captchaToken) {
+      toast.error("Please verify the captcha.");
+      return;
+    }
     setLoading(true)
     const payload = {
       sku: product?.sku ?? "",
@@ -70,10 +80,10 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
         onClose();
         toast.success("Bulk inquiry submitted successfully!");
       } else {
-        console.error("Failed to submit bulk inquiry");
+       
       }
     } catch (err) {
-      console.log("Something went wrong: ", err);
+
     } finally {
       setLoading(false)
     }
@@ -81,23 +91,17 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-[65rem] w-full max-h-[100vh] overflow-y-auto p-0 rounded-lg shadow-sm">
+      <DialogContent className="!max-w-[65rem] w-full max-h-[100vh] overflow-y-auto p-0 rounded-lg shadow-sm !z-[9999]">
         {/* Header with Close */}
-        {/* <DialogHeader className="flex justify-end p-4"> */}
-        {/* <DialogClose className="text-gray-500 hover:text-gray-700">
-            <X className="w-6 h-6" />
-          </DialogClose> */}
-        {/* </DialogHeader> */}
 
         <div className="flex flex-col md:flex-row">
-          {/* Left Side - Product Image */}
           <div className="md:w-3/5 bg-white p-8 flex flex-col items-center justify-center">
             {product?.image ? (
               <Image
                 src={product.image}
                 alt={product.name || "Product"}
                 width={300}
-                height={300}
+                height={300}fetchPriority="high"
                 className="object-contain"
               />
             ) : (
@@ -114,7 +118,6 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
 
           {/* Right Side - Form */}
           <div className="md:w-3/5 p-8 bg-white relative flex flex-col items-center">
-            {/* Red Banner with Title + Close */}
             <div style={{ borderRadius: "49% 51% 51% 49% / 0% 0% 50% 50%" }} className="absolute top-0 right-0 bg-[#014ec3] text-white px-6 py-5 w-full flex justify-center items-center">
               <h2 className="text-3xl">Request A Bulk Quote</h2>
             </div>
@@ -170,7 +173,15 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
                 rows={4}
                 className="w-full px-4 py-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#F15939] resize-none"
               />
-
+              {/* ✅ ReCAPTCHA */}
+              <div className="relative z-[99999]">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={sitekey}
+                  onChange={(token) => setCaptchaToken(token)}
+                  onExpired={() => setCaptchaToken(null)}
+                />
+              </div>
               <Button
                 type="submit"
                 disabled={loading}
@@ -180,7 +191,6 @@ const BulkInquiryModal: React.FC<BulkInquiryModalProps> = ({
               </Button>
             </form>
           </div>
-
         </div>
       </DialogContent>
     </Dialog>

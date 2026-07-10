@@ -45,12 +45,12 @@ const BlogCategories = ({
                     // Skeleton Loader for 3 items
                     <BlogSkeleton />
                 ) : error ? (
-                    <div className="w-full py-10 text-center text-red-500 font-medium">
+                    <div className="w-full py-10 text-center text-[#014ec3] font-medium">
                         {error || "Something went wrong while fetching blogs."}
                     </div>
-                ) : blogPosts && blogPosts?.length > 0 ? (
+                ) : blogPosts && blogPosts.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                        {blogPosts?.map((blog) => (
+                        {blogPosts.map((blog) => (
                             <div
                                 key={blog.id}
                                 className="
@@ -117,10 +117,11 @@ const BlogCategories = ({
                     </div>
                 ) : (
                     <div className="w-full py-10 text-center text-gray-500 font-medium">
-                        No blogs found.
+
                     </div>
                 )}
             </div>
+
         </div>
     );
 };

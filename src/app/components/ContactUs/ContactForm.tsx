@@ -1,6 +1,6 @@
 "use client";
-
-import React from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { contactRequests } from "@/redux/slices/contactSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import { sitekey } from "@/lib/axiosInstance";
+import { toast } from "react-toastify";
 type ContactFormData = {
   full_name: string;
   phone_number: string;
@@ -25,21 +27,28 @@ const ContactForm = () => {
     formState: { errors },
     reset,
   } = useForm<ContactFormData>();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state: any) => state.contact);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const onSubmit = (data: ContactFormData) => {
+    if (!captchaToken) {
+      toast("Please verify the captcha.");
+      return;
+    }
     // You can also log it in a more formatted way
-    dispatch(contactRequests(data)).unwrap().then(() => {
-      reset();
-    })
+    dispatch(contactRequests(data))
+      .unwrap()
+      .then(() => {
+        reset();
+      });
   };
 
   return (
-    <div className="w-[80%]  max-w-full lg:max-w-[1170px]  mx-0 lg:mx-auto  lg:px-[0%] px-[7%] ">
+    <div className="w-[full] md:max-w-full lg:max-w-[1170px]  mx-0 lg:mx-auto  lg:px-[0%] px-[7%] ">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <div className="flex items-center gap-2 text-sm">
+        <div className="hidden md:flex items-center gap-2 text-sm">
           <Link href="/" className="text-[#014ec3] hover:underline">
             Home
           </Link>
@@ -50,27 +59,42 @@ const ContactForm = () => {
 
       {/* Page Title */}
       <div className="mb-8">
-        <h1 className="sm:text-[28px] h1-lg mb-4">Contact Form</h1>
-        <h2 className="sm:text-[28px] h1-lg ">Techify Nation </h2>
+        <h1 className="text-[28px] text-[#545454] mb-4 !font-normal roboto-only-font ">
+          Contact Form
+        </h1>
+        <h2 className="text-[28px] text-[#545454]  !font-normal roboto-only-font ">
+          Techify Nation
+        </h2>
       </div>
 
       {/* Intro Text */}
       <div className="mb-8">
-        <p className="sm:text-[14px] text-[1rem] text-[#545454] font-normal ">
+        <p className="sm:text-[14px] text-[1rem] text-[#545454] font-normal roboto-font">
           We're happy to answer questions or help you with returns.
         </p>
-        <p className="sm:text-[14px] text-[1rem] text-[#545454] font-normal">
+        <p className="sm:text-[14px] text-[1rem] text-[#545454] font-normal roboto-font">
           Please fill out the form below if you need assistance.
         </p>
       </div>
 
       {/* Intro Text */}
       <div className="mb-8">
-        <p className="text-[10px] text-black font-normal mb-2">
+        <p className="text-[10px] text-[#545454] font-bold mb-2 roboto-font">
           SMS Disclaimer:
         </p>
-        <p className="text-[10px] text-[#545454] font-normal leading-[1.8]">
-          By providing my phone number to Techify Nation , I agree and acknowledge that Techify Nation may send text messages to my wireless phone number for any purpose. Message frequency will vary, and Message and data rates may apply. If you need further assistance, please reply "HELP". You can also opt out by replying "STOP." For more information on how your data will be handled, please visit our privacy policy.
+        <p className="text-[10px] text-[#545454] font-normal leading-[1.8] roboto-font">
+          By providing my phone number to Techify Nation, I agree and acknowledge
+          that Techify Nation may send text messages to my wireless phone number
+          for any purpose. Message frequency will vary, and Message and data
+          rates may apply. If you need further assistance, please reply “HELP”.
+          You can also opt out by replying “STOP.” For more information on how
+          your data will be handled, please visit&nbsp;
+          <Link
+            href="/privacy-Policy"
+            className="text-[#014ec3] underline cursor-pointer"
+            target="_blank"
+            rel="noopener noreferrer"
+          ></Link>
         </p>
       </div>
 
@@ -89,7 +113,7 @@ const ContactForm = () => {
               type="text"
               id="full_name"
               {...register("full_name")}
-              className="mt-1 block w-full max-w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full max-w-full  h-[42px] rounded-none px-4 py-2  border-[0.5px] border-[#545454]/50  bg-white focus:ring-red-500 focus:border-red-500"
             />
           </div>
 
@@ -104,7 +128,7 @@ const ContactForm = () => {
               type="tel"
               id="phone_number"
               {...register("phone_number")}
-              className="mt-1 block w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full h- max-w-full h-[42px] rounded-none px-4 py-2 border-[0.5px] border-[#545454]/50 bg-white focus:ring-red-500 focus:border-red-500"
             />
           </div>
         </div>
@@ -131,7 +155,7 @@ const ContactForm = () => {
                   message: "Invalid email address",
                 },
               })}
-              className="mt-1 block w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full h- max-w-full h-[42px] rounded-none px-4 py-2 border-[0.5px] border-[#545454]/50 bg-white focus:ring-red-500 focus:border-red-500"
             />
             {errors.email && (
               <div
@@ -155,7 +179,7 @@ const ContactForm = () => {
               type="text"
               id="order_number"
               {...register("order_number")}
-              className="mt-1 block w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full h- max-w-full h-[42px] rounded-none px-4 py-2 border-[0.5px] border-[#545454]/50 bg-white focus:ring-red-500 focus:border-red-500"
             />
           </div>
         </div>
@@ -173,7 +197,7 @@ const ContactForm = () => {
               type="text"
               id="company_name"
               {...register("company_name")}
-              className="mt-1 block w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full h- max-w-full h-[42px] rounded-none px-4 py-2 border-[0.5px] border-[#545454]/50 bg-white focus:ring-red-500 focus:border-red-500"
             />
           </div>
 
@@ -188,7 +212,7 @@ const ContactForm = () => {
               type="text"
               id="rma_number"
               {...register("rma_number")}
-              className="mt-1 block w-full h- max-w-full h-[40px] px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500"
+              className="mt-1 block w-full h- max-w-full h-[42px] rounded-none px-4 py-2 border-[0.5px] border-[#545454]/50 bg-white focus:ring-red-500 focus:border-red-500"
             />
           </div>
         </div>
@@ -210,7 +234,7 @@ const ContactForm = () => {
               required: "Message is required",
             })}
             rows={6}
-            className="mt-1 block  max-w-full h-50 px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-red-500 focus:border-red-500 resize-none"
+            className="mt-1 block  max-w-full h-50 px-4 py-2 border-[0.5px] border-[#545454]/50 rounded-none bg-white focus:ring-red-500 focus:border-red-500 resize-none"
           />
           {errors.comments && (
             <div
@@ -222,10 +246,22 @@ const ContactForm = () => {
             </div>
           )}
         </div>
+        <div className="mt-6">
+          <ReCAPTCHA
+            sitekey={sitekey}
+            onChange={(token: any) => {
+              setCaptchaToken(token);
+            }}
+          />
+        </div>
 
         {/* Submit Button */}
         <div className="pt-2">
-          <button disabled={loading} type="submit" className="btn-primary">
+          <button
+            disabled={loading}
+            type="submit"
+            className="btn-primary h-[42px] w-full md:w-auto"
+          >
             {loading ? "LOADING..." : "SUBMIT FORM"}
           </button>
         </div>

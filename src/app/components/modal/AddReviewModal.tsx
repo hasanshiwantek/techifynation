@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
     DialogTitle,
-    DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +15,9 @@ import { useAppDispatch } from "@/hooks/useReduxHooks";
 import { addReview, } from "@/redux/slices/homeSlice";
 import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
+import { sitekey } from "@/lib/axiosInstance";
+
+
 interface AddReviewModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -39,6 +41,8 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
         comment: "",
         rating: 0,
     });
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null); // ✅
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
     const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
     const handleChange = (
@@ -52,6 +56,12 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        // ✅ Captcha check
+        if (!captchaToken) {
+            toast.error("Please verify the captcha.");
+            return;
+        }
+
         setLoading(true);
 
         const payload = {
@@ -66,10 +76,10 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                 onClose();
                 toast.success("Review submitted successfully!");
             } else {
-                console.log("Error Sending Review:", result.payload);
+
             }
         } catch (err) {
-            console.log("Something went wrong:", err);
+
         } finally {
             setLoading(false);
         }
@@ -83,14 +93,16 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
             comment: "",
             rating: 0,
         })
+        setCaptchaToken(null);          // ✅ reset
+        recaptchaRef.current?.reset();
     }, [isOpen])
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="!max-w-[70rem]  w-full max-h-[90vh] overflow-y-auto p-0 rounded-none shadow-sm bg-[#eaeaea]">
+            <DialogContent className="!max-w-[70rem]  w-full max-h-[90vh] overflow-y-auto p-0 rounded-none shadow-sm bg-[#eaeaea] !z-[9999]">
                 {/* ✅ Sticky Header */}
                 <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-[#ddd] bg-[#eaeaea]">
-                    <DialogTitle className="text-[18px] font-light text-[#333333]  w-full flex justify-center">
+                    <DialogTitle className="text-[18px] font-light text-[#545454]  w-full flex justify-center">
                         <div>
                             Write a Review
                         </div>
@@ -99,7 +111,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                         onClick={onClose}
                         className="text-[#333333] hover:text-black transition-colors"
                     >
-                        <X className="w-5 h-5" />
+                        <X className="w-8 h-8 text-[#CAC9C9]" />
                     </button>
                 </div>
                 <div className="flex flex-col md:flex-row bg-[#eaeaea]">
@@ -109,7 +121,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                             <Image
                                 src={product.image}
                                 alt={product.name || "Product"}
-                                width={300}
+                                width={300}fetchPriority="high"
                                 height={300}
                                 className="object-contain"
                             />
@@ -119,7 +131,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                             </div>
                         )}
                         {product?.name && (
-                            <p className="mt-4 text-base text-gray-700 text-center font-medium">
+                            <p className="mt-4 text-base text-[#545454] text-[15px] text-center font-medium">
                                 {product.name}
                             </p>
                         )}
@@ -134,7 +146,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                                 <div className="flex items-center justify-between mb-1">
                                     <Label
                                         htmlFor="rating"
-                                        className="text-[#545454] cursor-pointer block text-base leading-6 mb-2"
+                                        className="text-[#545454] text-[14px] cursor-pointer block  leading-6 mb-2"
                                     >Rating:</Label>
                                     <span className="text-[11px] text-[#999] uppercase tracking-wider">*</span>
 
@@ -163,7 +175,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
 
                                     <Label
                                         htmlFor="name"
-                                        className="text-[#545454] cursor-pointer block text-base leading-6 mb-2"
+                                        className="text-[#545454] cursor-pointer block text-[14px] leading-6 mb-2"
                                     >Name</Label>
                                 </div>
                                 <Input
@@ -180,7 +192,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
 
                                     <Label
                                         htmlFor="email"
-                                        className="text-[#545454] cursor-pointer block text-base leading-6 mb-2"
+                                        className="text-[#545454] cursor-pointer block text-[14px] leading-6 mb-2"
                                     >Email</Label>
                                     <span className="text-[11px] text-[#999] uppercase tracking-wider">*</span>
                                 </div>
@@ -198,7 +210,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
 
                                     <Label
                                         htmlFor="subject"
-                                        className="text-[#545454] cursor-pointer block text-base leading-6 mb-2"
+                                        className="text-[#545454] cursor-pointer block text-[14px] leading-6 mb-2"
                                     >Review Subject</Label>
                                     <span className="text-[11px] text-[#999] uppercase tracking-wider">*</span>
 
@@ -217,7 +229,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                                 <div className="flex items-center justify-between mb-1">
                                     <Label
                                         htmlFor="comment"
-                                        className="text-[#545454] cursor-pointer block text-base leading-6 mb-2"
+                                        className="text-[#545454] cursor-pointer block text-[14px] leading-6 mb-2"
                                     >Comments</Label>
                                     <span className="text-[11px] text-[#999] uppercase tracking-wider">*</span>
                                 </div>
@@ -228,6 +240,15 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
                                     rows={3}
                                     required
                                     className="w-full h-[100px] px-4 py-3 border border-gray-300 bg-white rounded-none focus:outline-none focus:ring-2 focus:ring-[#F15939] "
+                                />
+                            </div>
+                            {/* ✅ ReCAPTCHA */}
+                            <div className="relative z-[99999]">
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={sitekey}
+                                    onChange={(token) => setCaptchaToken(token)}
+                                    onExpired={() => setCaptchaToken(null)}
                                 />
                             </div>
                             <div className="pt-2">

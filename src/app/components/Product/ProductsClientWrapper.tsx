@@ -6,7 +6,78 @@ import Breadcrumb from "./Breadcrumb";
 import { fetchFilteredProducts } from "@/lib/api/products";
 import { ProductFilterPayload } from "@/types/types";
 import { useParams, usePathname } from "next/navigation";
+import Link from "next/link";
 
+// Helper: Find category path from root to target in the tree
+const findCategoryPath = (
+  categories: any[],
+  targetId: number,
+  path: any[] = []
+): any[] | null => {
+  for (const cat of categories) {
+    const currentPath = [...path, { name: cat.name, slug: cat.slug, id: cat.id, subcategories: cat.subcategories }];
+    if (cat.id === targetId) return currentPath;
+    if (cat.subcategories?.length) {
+      const found = findCategoryPath(cat.subcategories, targetId, currentPath);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+const CategoryBreadcrumb = ({ categoryId, categories }: { categoryId: number; categories: any[] }) => {
+  const path = findCategoryPath(categories, categoryId) || [];
+
+  return (
+    <nav
+      aria-label="breadcrumb"
+      className="flex items-center justify-center lg:justify-normal space-x-2 text-[11px] text-[#393939] lg:mb-7 sm:mb-7 mb-7 flex-wrap"
+    >
+      <Link href={"/"} className="text-[11px] hover:text-[#014ec3]" itemProp="name">
+        Home
+      </Link>
+      {path?.map((cat: any, index: number) => (
+        <span key={cat.id}>
+          <span
+            className="mt-2 mx-3 text-gray-400 text-[11px]"
+            aria-hidden="true"
+          >
+            /
+          </span>
+
+          {index === path.length - 1 ? (
+            <span className="text-[#014ec3]">{cat.name}</span>
+          ) : (<Link href={`/category/${cat?.slug}`}
+            className={`text-[11px] text-[#666666]  hover:text-[#014ec3]  transition-colors`}
+          >
+            <span itemProp="name">{cat.name}</span>
+          </Link>)}
+        </span>
+      ))}
+    </nav>
+  );
+};
+const BrandBreadcrumb = ({ brandName }: { brandName: string }) => {
+  return (
+    <nav
+      aria-label="breadcrumb"
+      className="flex items-center justify-center lg:justify-normal space-x-2 text-[11px] text-[#393939] lg:mb-7 sm:mb-7 mb-7 flex-wrap"
+    >
+      <Link href={"/"} className="text-[11px] hover:text-[#014ec3]" itemProp="name">
+        Home
+      </Link>
+
+      <span>
+        <span
+          className="mt-2 mx-3 text-gray-400 text-[11px]"
+          aria-hidden="true"
+        >
+          /
+        </span>
+        <span className="text-[#014ec3] cursor-pointer">{brandName}</span>
+      </span>
+    </nav>
+  );
+};
 export default function ProductsClientWrapper({
   categories,
   brands,
@@ -35,12 +106,13 @@ export default function ProductsClientWrapper({
     maxPrice: undefined,
     sortBy: "",
   });
-
+  const findCategory = findCategoryPath(categories, initialCategoryId) || [];
   const normalizeProductName = (p: any) => {
     const name =
       typeof p?.name === "string" ? p.name : (p?.name?.name as string | undefined);
     return (name ?? "").toString().toLowerCase().trim();
   };
+
 
   const normalizeFeatured = (p: any) => {
     return Boolean(p?.isFeatured ?? p?.featured ?? p?.is_featured ?? p?.is_featured_item);
@@ -139,7 +211,6 @@ export default function ProductsClientWrapper({
         setProducts(applyClientSort(res.data || [], filters.sortBy));
         setPagination(res.pagination || null);
       } catch (err: any) {
-        console.error("Error fetching products:", err);
         setError("Failed to load products");
       } finally {
         setIsLoading(false);
@@ -173,6 +244,7 @@ export default function ProductsClientWrapper({
     params?.slug,
   ]);
 
+
   return (
     <div className="w-full max-w-[1170px] mx-auto  lg:px-6 xl:px-0">
       <div className="py-6">
@@ -192,10 +264,11 @@ export default function ProductsClientWrapper({
             />
           </aside>
           {/* Main Content */}
-          <div className="lg:col-span-9">
+          <div className="lg:col-span-9 ">
             {(isCategoryPage || isBrandPage) && (
-              <div className="mb-4 px-4 md:px-0">
-                <Breadcrumb items={breadcrumbItems} />
+              <div className="mb-4 px-4 md:px-0 hidden md:block">
+                {isCategoryPage && <CategoryBreadcrumb categoryId={initialCategoryId} categories={categories} />}
+                {isBrandPage && <BrandBreadcrumb brandName={initialBrandName} />}
               </div>
             )}
             <ProductList
@@ -208,48 +281,13 @@ export default function ProductsClientWrapper({
               error={error}
               filterMeta={filterMeta}
               initialCategorydescription={initialCategorydescription}
+              categories={findCategory?.find((c: any) => c.id === initialCategoryId)}
+              initialCategoryId={initialCategoryId}
+              isBrandPage={isBrandPage}
             />
           </div>
         </div>
       </div>
     </div>
-    //       <div className="flex flex-col lg:flex-row gap-4 py-4 w-full xl:max-w-[100%] 2xl:max-w-[119.5%]">
-    //         {/* Sidebar: Filters */}
-    //         <aside
-    //           className="w-full lg:w-[27%] xl:w-[24%] 2xl:w-[24.1%] bg-white rounded
-    // "
-    //         >
-    //           <Sidebar
-    //             categories={categories}
-    //             brands={brands}
-    //             filters={filters}
-    //             setFilters={setFilters}
-    //             products={products}
-    //             filterMeta={filterMeta}
-    //             setFilterMeta={setFilterMeta}
-    //             isBrandPage={isBrandPage}
-    //             isCategoryPage={isCategoryPage}
-    //           />
-    //         </aside>
-
-    //         {/* Product Listing */}
-    //         <main className="w-full lg:w-[72%] xl:w-[73.3%] 2xl:w-[73.8%]">
-    //           {(isCategoryPage || isBrandPage) && (
-    //             <div className="mb-4 px-4 md:px-0">
-    //               <Breadcrumb items={breadcrumbItems} />
-    //             </div>
-    //           )}
-    //           <ProductList
-    //             filters={filters}
-    //             setFilters={setFilters}
-    //             products={products}
-    //             pagination={pagination}
-    //             isLoading={isLoading}
-    //             error={error}
-    //             filterMeta={filterMeta}
-    //             initialCategorydescription={initialCategorydescription}
-    //           />
-    //         </main>
-    //       </div>
   );
 }

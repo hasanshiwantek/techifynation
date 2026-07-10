@@ -120,7 +120,7 @@ const ReturnItemsModal: React.FC<ReturnItemsModalProps> = ({
         }
       } catch (err) {
         setError("Failed to load order details");
-        console.error(err);
+      
       } finally {
         setLoading(false);
       }
@@ -167,17 +167,16 @@ const ReturnItemsModal: React.FC<ReturnItemsModalProps> = ({
         isSubmit:true,
       };
 
-      console.log("Return Request Data:", returnData);
+    
 
       const response = await axiosInstance.post("web/orders/return-order", 
          returnData
       );
 
 
-        console.log("Return Request Response:", response.data);
       onClose();
     } catch (err) {
-      console.error("Submission error:", err);
+   
       alert("Failed to submit return request. Please try again.");
     } finally {
       setSubmitting(false);
@@ -254,7 +253,7 @@ const ReturnItemsModal: React.FC<ReturnItemsModalProps> = ({
               <p className="text-gray-700 mb-4">{error}</p>
               <button
                 onClick={onClose}
-                className="px-6 py-2 bg-[#014ec3] text-white rounded hover:bg-[#014ec3] transition"
+                className="px-6 py-2 bg-[#014ec3] text-white rounded hover:bg-red-700 transition"
               >
                 Close
               </button>

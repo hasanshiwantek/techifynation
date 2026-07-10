@@ -1,17 +1,21 @@
 "use client";
-import React, { useState } from "react";
-import { Search, ShoppingCart, Menu, X } from "lucide-react";
-import navlogo from "@/assets/nav-logo.svg";
+import React, { useEffect } from "react";
+import navlogo from "@/assets/nav-logo.webp";
 import Image from "next/image";
 import Link from "next/link";
-import { RootState } from "@/redux/store";
-import { useAppSelector } from "@/hooks/useReduxHooks";
+import { useAppSelector, useAppDispatch } from "@/hooks/useReduxHooks";
 import GlobalSearchBar from "./GlobalSearchBar";
-import MobileSearchBar from "./MobileSearchBar";
+import { fetchLogos } from "@/redux/slices/homeSlice";
+
+
 
 const Navbar: React.FC = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const cart = useAppSelector((state: RootState) => state.cart.items);
+  const dispatch = useAppDispatch();
+  const { logoUrl, logoType } = useAppSelector((state: any) => state?.home);
+  
+  useEffect(() => {
+    dispatch(fetchLogos());
+  }, []);
 
   return (
     <header className="bg-[var(--bg-color)]  sticky top-0 z-50 px-4 sm:px-0">
@@ -21,15 +25,15 @@ const Navbar: React.FC = () => {
           <div className="flex items-center justify-center flex-shrink-0">
             <Link href={"/"}>
               <div className="relative w-80 h-14 sm:w-70 sm:h-30 md:w-44 md:h-9 lg:w-48 lg:h-20 xl:w-76 xl:h-18 2xl:w-[253.48px] 2xl:h-[48px]">
-                <Image
-                  src={navlogo}
+                {logoType == "upload" && <Image
+                  src={logoUrl || navlogo}
                   alt="Logo"
                   fill
                   fetchPriority="high"
                   className="object-contain"
                   priority
                   sizes="(max-width: 768px) 200px, (max-width: 1200px) 200px, 253px"
-                />
+                />}
               </div>
             </Link>
           </div>
@@ -43,34 +47,36 @@ const Navbar: React.FC = () => {
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {/* Contact Info with Headphone Icon */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 xl:w-10 xl:h-10 text-gray-700"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z" />
-                </svg>
+              <div className="relative w-10 h-10 xl:w-12 xl:h-12 flex-shrink-0">
+                <Image
+                  src="/headphone.webp"
+                  alt="Contact support"
+                  fill
+                  className="object-contain"
+                  sizes="48px" fetchPriority="high"
+                />
               </div>
-              <div className="flex flex-col text-gray-800">
+              <div className="flex flex-col text-gray-800 roboto-font" >
                 <p className="text-[15px] font-semibold">
                   Call:{" "}
-                  <a
+                  {/* <Link
                     href="tel:+15022063033"
-                    className="text-[var(--primary-color)] text-[15px] hover:underline"
+                    aria-label="Call +1 (502) 206-3033"
+                    className="text-[var(--primary-color)] text-[18px] hover:underline"
                   >
                     {/* +1 502-206-3033 */}
-                  </a>
+                  {/* </Link> */} 
                 </p>
 
-                <p className="text-[15px] font-semibold">
+                <p className="text-[15px] font-bold">
                   Email:{" "}
-                  <a
+                  <Link
                     href="mailto:info@techifynation.com"
-                    className="text-[var(--primary-color)] text-[15px] hover:underline"
+                    aria-label="Email us at info@techifynation.com"
+                    className="text-[#014ec3] text-[15px] hover:underline"
                   >
                     info@techifynation.com
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -108,9 +114,9 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Text Banner */}
-        <div className="w-full xl:max-w-[1170px] 2xl:max-w-[1170px] mx-auto">
-          <div className="bg-white p-4 text-center mb-4">
-            <p className="md:text-[14px] text-[14px] font-medium">
+        <div className="w-full xl:max-w-[1170px] border-none 2xl:max-w-[1170px] mx-auto roboto-font" >
+          <div className="bg-white text-center p-0 mb-0 md:p-4 md:mb-4">
+            <p className="p-4 md:text-[14px] text-[14px] font-semibold text-[#545454]">
               We Accept POs from Fortune 1000 Companies, Government Agencies
               (Federal, State, Local), Defense (Military, Air Force, Navy),
               Universities, Schools and Colleges.
@@ -119,40 +125,6 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile Dropdown */}
-        {/* {mobileOpen && (
-          <div className="lg:hidden mt-4 space-y-4 px-4 pb-6 bg-white">
-            <div className="relative w-full">
-              <MobileSearchBar />
-            </div>
-
-            <div className="flex items-center gap-3 py-3 border-t">
-              <svg
-                className="w-6 h-6 text-gray-700"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z" />
-              </svg>
-              <div className="flex flex-col text-gray-800">
-                <p className="text-sm font-medium">
-                  Call:{" "}
-                  <span className="text-[#014ec3] font-semibold">
-                    +1 502-206-3033
-                  </span>
-                </p>
-                <p className="text-sm">
-                  Email:{" "}
-                  <a
-                    href="mailto:info@techifynation.com"
-                    className="hover:text-[#014ec3]"
-                  >
-                    info@techifynation.com
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        )} */}
       </nav>
     </header>
   );

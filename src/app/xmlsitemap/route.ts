@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
                 let sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-                urls.forEach((url) => {
+                urls?.forEach((url) => {
                     const safeUrl = url.replace(/&/g, '&amp;');
                     sitemapIndex += `\n  <sitemap>\n    <loc>${safeUrl}</loc>\n  </sitemap>`;
                 });
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
                 },
             });
         } catch (error) {
-            console.error('Main sitemap error:', error);
+           
             return new Response('Error loading sitemap index', { status: 500 });
         }
     }
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
             },
         });
     } catch (error) {
-        console.error(`Error fetching ${type} sitemap:`, error);
+        
         return new Response(`Failed to load ${type} sitemap`, { status: 500 });
     }
 }

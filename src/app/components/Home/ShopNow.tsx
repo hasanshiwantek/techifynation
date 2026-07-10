@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
 
 const ShopNow = () => {
@@ -9,14 +6,16 @@ const ShopNow = () => {
       {/* Mobile (< sm): image only, then text below */}
       <div className="sm:hidden">
         <div
-          className="w-full h-[220px] bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/about/about-us-last.png')" }}
+          className="relative w-full h-[220px] bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/about/about-us.jpg')" }}
           aria-hidden
-        />
+        >
+          <div className="absolute inset-0 bg-white/35" />
+        </div>
         <div className="max-w-7xl mx-auto px-6 py-10 w-full">
-          {/* <div className="w-full text-left text-[#444444]">
+          <div className="w-full max-w-[361px] text-left text-[#444444]">
             <h2 className="text-[2.66rem] font-bold mb-4">ABOUT US</h2>
-            <p className="text-2xl leading-relaxed mb-6 text-[#444444]">
+            <p className="text-2xl leading-relaxed mb-6 text-[#444444] roboto-font">
               We are a leading online retailer of server parts, committed to
               providing high-quality and reliable products to our customers.
               With a wide range of parts to choose from, we make it easy for
@@ -28,23 +27,26 @@ const ShopNow = () => {
             <Link href="/">
               <button
                 type="button"
-                className="bg-[#444444] hover:bg-[#014ec3] transition text-white px-4 py-3 rounded text-2xl"
+                className="bg-[#444444] text-white px-4 py-3 rounded text-2xl"
               >
                 SHOP NOW
               </button>
             </Link>
-          </div> */}
+          </div>
         </div>
       </div>
 
       {/* sm+: unchanged — text on image */}
       <div
-        className="hidden sm:block w-full bg-cover bg-center bg-no-repeat h-[350px] md:h-[490px]"
-        style={{ backgroundImage: "url('/about/about-us-last.png')" }}
+        className="relative hidden sm:block w-full bg-cover bg-center bg-no-repeat h-[350px] md:h-[490px]"
+        style={{
+           backgroundImage: "url('/about/about-us-update.webp')",
+        }}
       >
-        <div className="md:ml-24 ">
-          <div className="max-w-7xl mx-auto px-6 py-16">
-            {/* <div className="w-full md:max-w-xl text-center md:text-left text-[#444444]">
+        <div className="absolute inset-0 bg-white/35 pointer-events-none" aria-hidden />
+        <div className="relative z-10 md:ml-24">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="w-full max-w-[361px] text-center md:text-left text-[#444444]">
               <h2 className="text-3xl md:text-[2.7rem] font-bold md:mb-4">
                 ABOUT US
               </h2>
@@ -63,12 +65,12 @@ const ShopNow = () => {
               <Link href="/">
                 <button
                   type="button"
-                  className="bg-[#444444] hover:bg-[#014ec3] transition text-white px-4 py-3 rounded text-xl md:text-[1.7rem]"
+                  className="bg-[#444444] text-white px-8 py-3 rounded text-xl md:text-[1.76rem]"
                 >
                   SHOP NOW
                 </button>
               </Link>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

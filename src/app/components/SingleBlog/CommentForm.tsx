@@ -16,7 +16,7 @@ const CommentForm = () => {
         <div className="flex flex-wrap gap-[3%]">
           <div className="flex flex-col  w-[29.26%]">
             <label className="h5-20px-regular mb-1">
-              Name<span className="text-red-500">*</span>
+              Name<span className="text-[#014ec3]">*</span>
             </label>
             <input
               type="text"
@@ -27,7 +27,7 @@ const CommentForm = () => {
 
           <div className="flex flex-col  w-[29.26%]">
             <label className="h5-20px-regular mb-1">
-              Email<span className="text-red-500">*</span>
+              Email<span className="text-[#014ec3]">*</span>
             </label>
             <input
               type="email"
@@ -48,7 +48,7 @@ const CommentForm = () => {
         {/* Comment Box */}
         <div className="flex flex-col w-[94.6%]">
           <label className="h5-20px-regular mb-1">
-            Comment<span className="text-red-500">*</span>
+            Comment<span className="text-[#014ec3]">*</span>
           </label>
           <textarea
             className="w-full 2xl:h-[120px] xl:h-[92.5px]  border border-[#D6D6D6] rounded-[6px] px-[2.5%] py-[2%] text-sm resize-none"

@@ -1,14 +1,12 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { clearSearch, globalSearch, setSearchQuery, setShowSearchDropdown } from "@/redux/slices/homeSlice";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 const GlobalSearchBar: React.FC = () => {
-  const [query, setQuery] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -16,33 +14,9 @@ const GlobalSearchBar: React.FC = () => {
   const { searchQuery, showSearchDropdown, searchData, loading } = useAppSelector((state: any) => state.home);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const [results, setResults] = useState<any[]>([]);
-  const [searchCache, setSearchCache] = useState<{ [key: string]: any[] }>({});
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Map API results and store in cache
-  useEffect(() => {
-    if (searchData?.data) {
-      const mapped = searchData.data.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        slug: item.categories?.[0]?.slug || item.slug,
-        brand: item.brand?.name || "N/A",
-        sku: item.sku || "N/A",
-        price: item.price || item.costPrice || "0.00",
-        url: `/${item?.sku}`,
-        productUrl: `${item?.productUrl}`,
-      }));
 
-      setResults(mapped);
-      setShowDropdown(true);
-
-      const cacheKey = query.trim().toLowerCase();
-      if (cacheKey.length > 1) {
-        setSearchCache((prev) => ({ ...prev, [cacheKey]: mapped }));
-      }
-    }
-  }, [searchData]);
   // Hide dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -54,12 +28,6 @@ const GlobalSearchBar: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSearch = () => {
-    const trimmed = searchQuery.trim();
-    if (trimmed.length > 1) {
-      dispatch(globalSearch({ query: trimmed }));
-    }
-  };
 
   const handleOnChange = (value: string) => {
     dispatch(setSearchQuery(value));
@@ -83,20 +51,19 @@ const GlobalSearchBar: React.FC = () => {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > 100) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 100);
+        ticking = false;
+      });
     };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -104,18 +71,11 @@ const GlobalSearchBar: React.FC = () => {
       {/* Input Box */}
       <div className="relative w-full xl:max-w-[394px] 2xl:max-w-[394px] 2xl:ml-30 xl:ml-10 ml-0">
         <input
+          id="global-search"
           type="search"
           placeholder="SEARCH"
           value={searchQuery}
           onChange={(e) => handleOnChange(e.target.value)}
-          // onKeyDown={(e) => {
-          //   if (e.key === "Enter") {
-          //     e.preventDefault();
-          //     const q = searchQuery.trim();
-          //     dispatch(clearSearch());
-          //     router.push(`/advanced-search?q=${q}`);
-          //   }
-          // }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -159,7 +119,6 @@ const GlobalSearchBar: React.FC = () => {
                 } else {
                   router.push(`/advanced-search`);
                 }
-                // router.push(`/advanced-search?q=${q}`);
               }
             }}
             className="flex items-center justify-center"
@@ -172,7 +131,6 @@ const GlobalSearchBar: React.FC = () => {
       {/* Dropdown Results */}
 
       {showSearchDropdown && searchQuery.trim().length > 1 && (
-        // <div className="absolute top-full left-0 !w-[585px] mt-1 bg-[#f2f2f2] shadow-xl overflow-hidden z-[9999] max-h-[520px] overflow-y-auto border border-gray-300 ">
         <div className="absolute top-full left-1/2 -translate-x-1/2 w-[585px] mt-1 bg-[#f2f2f2] shadow-xl overflow-hidden z-[9999] max-h-[520px] overflow-y-auto border border-gray-300">
 
           {loading && <div className="p-6 text-gray-500 text-center">Searching...</div>}
@@ -265,7 +223,7 @@ const GlobalSearchBar: React.FC = () => {
                         handleSelect(url);
                       }}
                       // className="mt-4 w-full bg-[#cccccc] hover:bg-[#bbbbbb] text-[#333] font-bold text-[14px] uppercase py-3 tracking-widest transition-all active:bg-gray-400 btn-pri"
-                      className="font-bold text-[14px] font-roboto-condensed leading-4 uppercase font-robot border-b-[4px] border-b-[#393939] bg-[#cac9c9] text-[#393939] rounded-none hover:bg-[#0244a7] hover:border-b-[#0244a7] hover:text-white px-[2.28571rem] py-[0.85714rem] my-0"
+                      className="font-bold text-[14px] font-roboto-condensed leading-4 uppercase font-robot border-b-[4px] border-b-[#393939] bg-[#cac9c9] text-[#393939] rounded-none hover:bg-[#014ec3] hover:border-b-[#6b0107] hover:text-white px-[2.28571rem] py-[0.85714rem] my-0"
                     >
                       VIEW DETAILS
                     </button>

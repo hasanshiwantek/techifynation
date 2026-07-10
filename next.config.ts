@@ -3,17 +3,30 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
+
   images: {
+
     unoptimized: true, // 👈 Add this line
     formats: ["image/avif", "image/webp"],
+    qualities: [65, 70, 75],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
 
     // Explicit hosts + catch-all
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "backend.sparemicro.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dn3xtdxrpdtqv.cloudfront.net",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "ecom.brokercell.com",
@@ -39,12 +52,6 @@ const nextConfig: NextConfig = {
         hostname: "cdn11.bigcommerce.com",
         pathname: "/**",
       },
-      // Catch-all for any other HTTPS image
-      {
-        protocol: "https",
-        hostname: "*",
-        pathname: "/**",
-      },
     ],
   },
 
@@ -55,12 +62,8 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    esmExternals: true,
+    // esmExternals: true,
     serverActions: { allowedOrigins: [] },
-  },
-
-  future: {
-    webpack5: true,
   },
 
   async headers() {
@@ -125,11 +128,7 @@ const nextConfig: NextConfig = {
       fallback: [],
     };
   },
-  webpack(config, { dev, isServer }) {
-    // Target modern JS in client build
-    if (!dev && !isServer) {
-      config.target = ["web", "es6"];
-    }
+  webpack(config) {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,

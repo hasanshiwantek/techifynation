@@ -99,6 +99,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
               src="/checkouticon/card.png"
               alt="Cards"
               width={120}
+              fetchPriority="high"
               height={30}
             />
           </div>
@@ -202,7 +203,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
             </div>
 
             {cardError && (
-              <p className="text-sm text-red-500">{cardError}</p>
+              <p className="text-sm text-[#014ec3]">{cardError}</p>
             )}
           </div>
         )}
@@ -225,12 +226,13 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
             alt="Apple Pay"
             width={30}
             height={30}
+            fetchPriority="high"
           />
         </div>
         <Image
           src="/checkouticon/card.png"
           alt="Cards"
-          width={100}
+          width={100}fetchPriority="high"
           height={30}
         />
       </label>
@@ -252,19 +254,19 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
             src="/checkouticon/googlepay.png"
             alt="Google Pay"
             width={60}
-            height={30}
+            height={30}fetchPriority="high"
           />
         </div>
         <Image
           src="/checkouticon/card.png"
           alt="Cards"
-          width={100}
+          width={100}fetchPriority="high"
           height={30}
         />
       </label>
 
       {errors.paymentMethod && (
-        <p className="text-sm text-red-500 mt-2">
+        <p className="text-sm text-[#014ec3] mt-2">
           {errors.paymentMethod.message as string}
         </p>
       )}

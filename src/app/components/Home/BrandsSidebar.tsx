@@ -34,9 +34,9 @@ const BrandsSidebar: React.FC<BrandsSidebarProps> = ({ activeBrandId }) => {
           <CategoriesSidebarSkeleton />
         ) : data && data.length > 0 ? (
           data?.slice(0, 11).map((brand: any) => (
-            <Link href={`/brand/${brand?.slug}`} key={brand.id} style={{ fontFamily: '"Roboto Condensed"' }}>
+            <Link href={`/brand/${brand?.slug}`} key={brand.id} >
               <button
-                className={`w-full px-3 py-1 text-left text-[13px] lg:text-[14px]  font-normal flex items-center gap-3 transition-colors
+                className={`w-full px-3 py-1 text-left text-[13px] lg:text-[14px]  font-normal flex items-center gap-3 transition-colors roboto-condensed-only-font
                   ${brand.id === activeBrandId
                     ? "text-[var(--primary-color)]"
                     : "text-[#545454] hover:text-[var(--primary-color)]"
@@ -47,7 +47,7 @@ const BrandsSidebar: React.FC<BrandsSidebarProps> = ({ activeBrandId }) => {
             </Link>
           ))
         ) : error ? (
-          <div className="px-2 py-4 text-center text-red-400">
+          <div className="px-2 py-4 text-center text-[#014ec3]">
             Failed to load brands
           </div>
         ) : (
@@ -56,14 +56,13 @@ const BrandsSidebar: React.FC<BrandsSidebarProps> = ({ activeBrandId }) => {
           </div>
         )}
 
-        <Link href="/brands">
-          <button
-            type="button"
+        {data?.length > 0 && <>
+          <Link href="/brands"
             className="w-full px-3 py-1 text-left text-[15px] font-normal flex items-center gap-3 transition-colors text-[#545454] hover:text-[var(--primary-color)]"
           >
             <span>View all brands</span>
-          </button>
-        </Link>
+          </Link>
+        </>}
       </div>
     </div>
   );
