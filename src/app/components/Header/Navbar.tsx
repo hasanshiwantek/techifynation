@@ -113,17 +113,6 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Text Banner */}
-        <div className="w-full xl:max-w-[1170px] border-none 2xl:max-w-[1170px] mx-auto roboto-font" >
-          <div className="bg-white text-center p-0 mb-0 md:p-4 md:mb-4">
-            <p className="p-4 md:text-[14px] text-[14px] font-semibold text-[#545454]">
-              We Accept POs from Fortune 1000 Companies, Government Agencies
-              (Federal, State, Local), Defense (Military, Air Force, Navy),
-              Universities, Schools and Colleges.
-            </p>
-          </div>
-        </div>
-
         {/* Mobile Dropdown */}
       </nav>
     </header>
